@@ -4,11 +4,8 @@ public class Task02 {
 	int s = 0;
 	int delta = n;
 	for (int i = 1; i <= n; i++) {
-	    for (int j = 1; j < i; j++) {
-		delta *= n;
-	    }
 	    s += delta;
-	    delta = n;
+	    delta *= n;
 	}
 	System.out.println(s);
     }
