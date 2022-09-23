@@ -5,15 +5,9 @@ public class Task05 {
 	double s = 0;
 	double delta1 = 1, delta2 = x;
 	for (int i = 1; i <= n; i++) {
-	    for (int j = 1; j <= i; j++) {
-		delta1 *= j;
-	    }
-	    for (int j = 1; j < i; j++) {
-		delta2 *= x;
-	    }
+	    delta1 *= i;
 	    s += (double) delta1 * delta2;
-	    delta1 = 1;
-	    delta2 = x;
+	    delta2 *= x;
 	}
 	System.out.println(s);
     }
