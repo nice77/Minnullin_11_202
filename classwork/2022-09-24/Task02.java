@@ -8,9 +8,18 @@ public class Task02 {
 //----------init----------
 	Scanner sc = new Scanner(System.in);
 	Random r = new Random();
-	final int WIDTH = 10;
-	final int HEIGHT = 10;
-	final int MINES = 10;
+	if (args.length != 0) {
+	    if (args[0] == "-h") {
+		System.out.println("To open the cell - type 'o {x} {y}'");
+		System.out.println("To put the flag - type 'f {x} {y}'");
+	    }
+	}
+	System.out.print("Input field's width: ");
+	final int WIDTH = Integer.parseInt(sc.nextLine());
+	System.out.print("Input field's height: ");
+	final int HEIGHT = Integer.parseInt(sc.nextLine());
+	System.out.print("Input number of mines: ");
+	final int MINES = Integer.parseInt(sc.nextLine());
 	final int TAB = 8;
 
 	int [][] field = new int[HEIGHT][WIDTH];
@@ -74,9 +83,24 @@ public class Task02 {
 	int[] deltas = {-1, 0, 1};
 	boolean isnotin = true;
 	while (running) {
+
+	    System.out.println(" mmmm");
+	    System.out.println("#'   '  mmm   mmmm   m   m   mmm    m mm");
+	    System.out.println("'#mmm  '   #  #' '#  'm m'  #' '#   #'");
+	    System.out.println("    '# m'''#  #   #   #m#   #   #   #");
+	    System.out.println("'mmm#' 'mm'#  ##m#'   '#    '#m#'   #");
+	    System.out.println("              #       m");
+	    System.out.println("An innovative game!\n");
+
 	    //	outputting the gameboard
+	    System.out.print(" ".repeat(TAB - 1) + "|");
+	    for (int i = 0; i < WIDTH; i++) {
+		System.out.print(" ".repeat(TAB / 2 - 2) + i + " ".repeat(TAB / 2 - 1) + "|\t");
+	    }
+	    System.out.println();
 	    for (int i = 0; i < HEIGHT; i++) {
-		System.out.println("−".repeat(TAB * WIDTH));
+		System.out.println("−".repeat(TAB * (1 + WIDTH)));
+		System.out.print(" ".repeat(3) + i + " ".repeat(3) + "|");
 		for (int j = 0; j < WIDTH; j++) {
 		    if (opened[i][j] == 0) {
 			System.out.print(" ".repeat(TAB / 2 - 2) + "#" + " ".repeat(TAB / 2 - 1) + "|\t");
@@ -94,7 +118,8 @@ public class Task02 {
 		}
 		System.out.println();
 	    }
-	    System.out.println("−".repeat(TAB * WIDTH));
+	    leftCells = 0;
+	    System.out.println("−".repeat(TAB * (WIDTH + 1)));
 	    if (leftCells == MINES) {
 		running = false;
 		won = true;
@@ -136,7 +161,6 @@ public class Task02 {
 				if (field[elem[1] + dy][elem[0] + dx] >= 0) {
 				    elem[0] += dx;
 				    elem[1] += dy;
-				    System.out.println("Comparing: ");
 				    for (int[] arr : queue) {
 					if (arr[0] == elem[0] && arr[1] == elem[1]) {
 					    isnotin = false;
@@ -149,7 +173,6 @@ public class Task02 {
 				    // Добавляет массивы с разными элементами, но с одними id! Надо изменить проверку!
 				    // В очереди сидят переменные elem, которые мы меняем => меняем и сами элементы очереди!
 				    // Проще говоря, надо помнить про ссылочные и не только типы данных
-				    System.out.println("Dx, dy, elem: " + dx + " " + dy + " " + Arrays.toString(elem));
 				    elem[0] -= dx;
 				    elem[1] -= dy;
 				}
