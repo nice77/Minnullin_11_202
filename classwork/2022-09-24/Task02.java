@@ -109,7 +109,6 @@ public class Task02 {
 				}
 				System.out.println();
 		    	}
-		    	leftCells = 0;
 		    	System.out.println("−".repeat(TAB * (WIDTH + 1)));
 		    	if (leftCells == MINES) {
 				running = false;
@@ -119,6 +118,7 @@ public class Task02 {
 				System.out.println((won) ? "You've won!" : "A bomb!");
 				break;
 		    	}
+			leftCells = 0;
 
 		    //	parsing the commands
 
