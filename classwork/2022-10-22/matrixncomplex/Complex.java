@@ -5,28 +5,48 @@ public class Complex {
 		this.b = b;
 	}
 
-	public void add(Complex other) {
-		a += other.getRe();
-		b += other.getIm();
-	}
-	public void add(int other) {
-		b += other;
-	}
-	public void add(double other) {
-		b += other;
+	public Complex add(Complex other) {
+		double a = this.a + other.a;
+		double b = this.b + other.b;
+		return new Complex(a, b);
 	}
 
-	public void sub(Complex other) {
-		a -= other.getRe();
-		b -= other.getIm();
+	public Complex add(double other) {
+		double a = this.a + other;
+		return new Complex(a, this.b);
 	}
 
-	public mul(Complex b) {}
+	public Complex sub(Complex other) {
+		double a = this.a - other.a;
+		double b = this.b - other.b;
+		return new Complex(a, b);
+	}
 
-	public getRe() {
+	public Complex sub(double other) {
+		double a = this.a - other;
+		return new Complex(a, this.b);
+	}
+
+	public Complex mul(Complex other) {
+		double a = this.a * other.a - this.b * other.b;
+		double b = this.a * other.b + other.a * this.b;
+		return new Complex(a, b);
+	}
+
+
+	public void setRe(double a) {
+		this.a = a;
+	}
+	public void setIm(double b) {
+		this.b = b;
+	}
+	public double getRe() {
 		return this.a;
 	}
-	public getIm() {
+	public double getIm() {
 		return this.b;
+	}
+	public String toString() {
+		return this.a + " + " + this.b + " * i";
 	}
 }
