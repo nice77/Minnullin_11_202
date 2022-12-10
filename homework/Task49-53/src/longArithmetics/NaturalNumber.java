@@ -1,5 +1,7 @@
 package longArithmetics;
 
+import java.util.Arrays;
+
 class NaturalNumber extends Number {
 	public NaturalNumber(String num) {
 		super(num);
@@ -8,7 +10,7 @@ class NaturalNumber extends Number {
 		super(num, size);
 	}
 	public NaturalNumber add(NaturalNumber other) {
-		int[] out = new int[Math.max(this.number.length, other.number.length)];
+		int[] out = new int[Math.max(this.number.length, other.number.length) * 2];
 		int size = 0;
 		for (int i = 0; i < out.length; i++) {
 			out[i] = 0;
@@ -23,10 +25,13 @@ class NaturalNumber extends Number {
 			if (i >= this.size) {
 				out[i] += other.number[i];
 			}
-			else {
+			else if (i >= other.size) {
 				out[i] += this.number[i];
 			}
 			size++;
+		}
+		if (out[size + 1] != 0) {
+			size += 1;
 		}
 		return new NaturalNumber(out, size);
 	}
@@ -49,39 +54,52 @@ class NaturalNumber extends Number {
 	}
 	public NaturalNumber mulOnDigit(int digit) {
 		int[] out = new int[this.number.length];
-		int size = 0;
+		for (int i = 0; i < out.length; i++) {
+			out[i] = 0;
+		}
 		for (int i = 0; i < this.size; i++) {
 			out[i] += this.number[i] * digit;
 			out[i + 1] += out[i] / 10;
 			out[i] %= 10;
-			size++;
 		}
-		size = (out[size] == 0) ? size : size + 1;
-		for (int i = size; i < this.number.length; i++) {
-			out[i] = 0;
+		int sizeDiff = this.size;
+		if (out[this.size] != 0) {
+			sizeDiff += 1;
 		}
-		return new NaturalNumber(out, size);
+		if (out.length - sizeDiff < 5) {
+			out = appender(out);
+		}
+		return new NaturalNumber(out, sizeDiff);
 	}
 	public NaturalNumber mul(NaturalNumber other) {
-		/*int[] out = new int[this.number.length + other.number.length];
-		for (int i = 0; i < out.length; i++) {
-			out[i] = (i < this.size) ? this.number[i] : 0;
-		}
+		NaturalNumber out = this.mulOnDigit(other.number[0]);
+		//System.out.println("Diff: " + this.mulOnDigit(other.number[0]));
 		NaturalNumber temp;
-		NaturalNumber outNum = this.mulOnDigit(other.number[0]);
-		for (int i = 1; i < other.number.length; i++) {
+		for (int i = 1; i < other.size; i++) {
 			temp = this.mulOnDigit(other.number[i]);
-			System.out.println("I: " + i + "; temp: " + temp + "; other[i]: " + other.number[i]);
 			for (int j = 0; j < i; j++) {
-				temp = temp.mulOnDigit(10);
+				temp = temp.mulOnDigit(2).mulOnDigit(5);
 			}
-			System.out.println("I: " + i + "; temp: " + temp + "; other[i]: " + other.number[i]);
-			outNum = outNum.add(temp);
+
+			System.out.println("Diff: " + temp);
+			out = out.add(temp);
 		}
-		return outNum;*/
-		int[] out = new int[this.number.length + other.number.length];
+		return out;
+	}
+
+	public static int[] appender(int[] arr) {
+		int[] out = new int[arr.length + 5];
 		for (int i = 0; i < out.length; i++) {
-			out[i] = (i < this.size) ? this.number[i] : 0;
+			if (i < arr.length) {
+				out[i] = arr[i];
+			}
+			else {
+				out[i] = 0;
+			}
 		}
+		return out;
+	}
+	public String getData() {
+		return Arrays.toString(this.number);
 	}
 }
