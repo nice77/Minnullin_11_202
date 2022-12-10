@@ -6,6 +6,6 @@ public class Main {
 		System.out.println(a);
 		NaturalNumber b = new NaturalNumber("1124");
 		System.out.println(b);
-		System.out.println(a.mul(b));
+		System.out.println(a.add(b));
 	}
 }

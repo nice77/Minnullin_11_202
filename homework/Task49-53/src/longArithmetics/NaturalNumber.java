@@ -63,7 +63,7 @@ class NaturalNumber extends Number {
 		return new NaturalNumber(out, size);
 	}
 	public NaturalNumber mul(NaturalNumber other) {
-		int[] out = new int[this.number.length + other.number.length];
+		/*int[] out = new int[this.number.length + other.number.length];
 		for (int i = 0; i < out.length; i++) {
 			out[i] = (i < this.size) ? this.number[i] : 0;
 		}
@@ -78,6 +78,10 @@ class NaturalNumber extends Number {
 			System.out.println("I: " + i + "; temp: " + temp + "; other[i]: " + other.number[i]);
 			outNum = outNum.add(temp);
 		}
-		return outNum;
+		return outNum;*/
+		int[] out = new int[this.number.length + other.number.length];
+		for (int i = 0; i < out.length; i++) {
+			out[i] = (i < this.size) ? this.number[i] : 0;
+		}
 	}
 }

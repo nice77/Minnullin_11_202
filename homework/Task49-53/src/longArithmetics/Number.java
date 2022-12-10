@@ -1,7 +1,5 @@
 package longArithmetics;
 
-import java.util.Arrays;
-
 class Number {
 	protected int[] number;
 	protected int size;
