@@ -23,7 +23,7 @@ public class RationalMatrix {
 		}
 		return temp;
 	}
-	public RationalFraction mul(RationalMatrix other) {
+	public RationalMatrix mul(RationalMatrix other) {
 		RationalMatrix temp = new RationalMatrix();
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {

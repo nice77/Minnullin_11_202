@@ -4,8 +4,7 @@ public class Matrix {
 	private double[][] matrix = new double[2][2];
 
 	public Matrix() {
-		double[] arr = {0, 0, 0, 0};
-		this(arr);
+		this(0);
 	}
 	public Matrix(double elem) {
 		for (int i = 0; i < 4; i++) {
@@ -35,41 +34,41 @@ public class Matrix {
 		Matrix m = new Matrix();
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
-				m[i][j] = this.matrix[i][j] + other.matrix[i][j];
+				m.matrix[i][j] = this.matrix[i][j] + other.matrix[i][j];
 			}
 		}
 		return m;
 	}
 	public void add2(Matrix other) {
-                for (int i = 0; i < 2; i++) {
-                        for (int j = 0; j < 2; j++) {
-                                this.matrix[i][j] += other.matrix[i][j];
-                        }
-                }
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+				this.matrix[i][j] += other.matrix[i][j];
+			}
+		}
 	}
 
 	public Matrix sub(Matrix other) {
-                Matrix m = new Matrix();
-                for (int i = 0; i < 2; i++) {
-                        for (int j = 0; j < 2; j++) {
-                                m[i][j] = this.matrix[i][j] - other.matrix[i][j];
-                        }
-                }
-                return m;
-        }
-        public void sub2(Matrix other) {
-                for (int i = 0; i < 2; i++) {
-                        for (int j = 0; j < 2; j++) {
-                                this.matrix[i][j] -= other.matrix[i][j];
-                        }
-                }
-        }
+		Matrix m = new Matrix();
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+				m.matrix[i][j] = this.matrix[i][j] - other.matrix[i][j];
+			}
+		}
+		return m;
+	}
+	public void sub2(Matrix other) {
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+				this.matrix[i][j] -= other.matrix[i][j];
+			}
+		}
+	}
 
 	public Matrix mulNumber(double other) {
 		Matrix m = new Matrix();
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
-				m[i][j] = this.matrix[i][j] * other;
+				m.matrix[i][j] = this.matrix[i][j] * other;
 			}
 		}
 		return m;
@@ -105,7 +104,10 @@ public class Matrix {
 	}
 
 	public void mul2(Matrix other) {
-		this.matrix = Arrays.deepCopyOf(this.mulHelper(other));
+		double[][] temp = this.mulHelper(other);
+		for (int i = 0; i < 2; i++) {
+			this.matrix[i] = Arrays.copyOf(temp[i], 2);
+		}
 	}
 
 	public double det() {
@@ -124,10 +126,14 @@ public class Matrix {
 		Matrix tempM = new Matrix(this.matrix);
 		double d = tempM.det();
 		if (d == 0) {
+			System.out.println("Determinant equals to zero!");
 			return new Matrix();
 		}
 		tempM.transpon();
-		double[][] temp = Arrays.deepCopyOf(tempM.matrix);
+		double[][] temp = new double[2][2];
+		for (int i = 0; i < 2; i++) {
+			temp[i] = Arrays.copyOf(tempM.matrix[i], 2);
+		}
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
 				tempM.matrix[i][j] = temp[(i + 1) % 2][(j + 1) % 2] / d;
@@ -165,5 +171,4 @@ public class Matrix {
 		}
 		return s;
 	}
-
 }

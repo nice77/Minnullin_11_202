@@ -9,8 +9,8 @@ public class ComplexVector2D {
 	}
 	public ComplexVector2D add(ComplexVector2D other) {
 		ComplexVector2D temp = new ComplexVector2D(this.x, this.y);
-		temp.setX(temp.getX.add(other.getX));
-		temp.setY(temp.getY.add(other.getY));
+		temp.setX(temp.getX().add(other.getX()));
+		temp.setY(temp.getY().add(other.getY()));
 		return temp;
 	}
 	public String toString() {

@@ -1,4 +1,4 @@
-public ComplexMatrix {
+class ComplexMatrix {
 	private Complex[][] matrix = new Complex[2][2];
 	public ComplexMatrix() {
 		this(new Complex(0, 0), new Complex(0, 0), new Complex(0, 0), new Complex(0, 0));
@@ -6,7 +6,7 @@ public ComplexMatrix {
 	public ComplexMatrix(Complex val) {
 		this(val, val, val, val);
 	}
-	public ComplexMatrix(Comlpex uno, Complex dos, Complex tres, Complex quatro) {
+	public ComplexMatrix(Complex uno, Complex dos, Complex tres, Complex quatro) {
 		matrix[0][0] = new Complex(uno.getRe(), uno.getIm());
 		matrix[0][1] = new Complex(dos.getRe(), dos.getIm());
 		matrix[1][0] = new Complex(tres.getRe(), tres.getIm());
@@ -16,7 +16,7 @@ public ComplexMatrix {
 		ComplexMatrix temp = new ComplexMatrix();
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
-				temp.getMatrix()[i][j] = this.matrix[i][j].add(other.getMatrix[i][j]);
+				temp.getMatrix()[i][j] = this.matrix[i][j].add(other.getMatrix()[i][j]);
 			}
 		}
 		return temp;

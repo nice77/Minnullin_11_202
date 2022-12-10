@@ -1,4 +1,4 @@
-public class Vector2D {
+class Vector2D {
 	private double x, y;
 	public static final double EPS = 1e-7;
 	public Vector2D() {
@@ -43,7 +43,7 @@ public class Vector2D {
 		return this.scalarProduct(other) / (this.length() * other.length());
 	}
 	public boolean equals(Vector2D other) {
-		return ((this.x - other.x < eps) && (this.y - other.y < eps));
+		return ((this.x - other.x < EPS) && (this.y - other.y < EPS));
 	}
 	public double getX() {
 		return this.x;

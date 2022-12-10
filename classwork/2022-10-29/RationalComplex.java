@@ -1,4 +1,4 @@
-public RationalComplex {
+class RationalComplex {
 	private RationalFraction a, b;
 	public RationalComplex() {
 		this(new RationalFraction(), new RationalFraction());
@@ -21,12 +21,12 @@ public RationalComplex {
 	}
 	public RationalComplex mul(RationalComplex other) {
 		RationalComplex temp = new RationalComplex();
-		temp.setRe(this.a * other.getRe() - this.b * other.getIm());
-		temp.setIm(this.a * other.getIm() + other.getRe() * this.b);
+		temp.setRe(this.a.mul(other.getRe()).sub(this.b.mul(other.getIm())));
+		temp.setIm(this.a.mul(other.getIm()).add(other.getRe().mul(this.b)));
 		return temp;
 	}
 	public String toString() {
-		return this.a + (this.b == 0 ? '' : ((this.b > 0) ? " + " + this.b : " - " + this.b));
+		return this.a + (this.b.getX() == 0 ? ' ' : ((this.b.value() > 0 ) ? " + " + this.b : " - " + this.b));
 	}
 	public RationalFraction getRe() {
 		return this.a;

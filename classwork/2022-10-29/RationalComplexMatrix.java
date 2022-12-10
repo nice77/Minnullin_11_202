@@ -1,11 +1,10 @@
-public RationalComplexMatrix {
+class RationalComplexMatrix {
 	private RationalComplex[][] matrix = new RationalComplex[2][2];
 	public RationalComplexMatrix() {
-		RationalComplex zero = new RationalComplex();
-		this(zero, zero, zero, zero);
+		this(new RationalComplex());
 	}
 	public RationalComplexMatrix(RationalComplex val) {
-		this(val, val, val, val)
+		this(val, val, val, val);
 	}
 	public RationalComplexMatrix(RationalComplex uno, RationalComplex dos, RationalComplex tres, RationalComplex quatro) {
 		matrix[0][0] = new RationalComplex(uno.getRe(), uno.getIm());
