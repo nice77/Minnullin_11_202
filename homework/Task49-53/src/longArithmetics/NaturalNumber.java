@@ -99,7 +99,24 @@ class NaturalNumber extends Number {
 		}
 		return out;
 	}
-	public String getData() {
-		return Arrays.toString(this.number);
+	public static NaturalNumber[] sort(NaturalNumber first, NaturalNumber second) {
+		boolean firstOut = false;
+		NaturalNumber[] temp = new NaturalNumber[2];
+		if (first.size > second.size) {
+			temp[0] = second;
+			temp[1] = first;
+		}
+		else if (first.size < second.size) {
+			temp[0] = first;
+			temp[1] = second;
+		}
+		for (int i = first.size - 1; i >= 0; i--) {
+			if (first.number[i] > second.number[i]) {
+				temp[0] = second;
+				temp[1] = first;
+				break;
+			}
+		}
+		return temp;
 	}
 }
