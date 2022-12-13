@@ -5,9 +5,9 @@ import java.io.File;
 class Main {
 	public static void main(String[] args) throws FileNotFoundException{
 		String[] films = createFilms();
-		User[] users = new User[15];
+		User[] users = new User[9];
 		createUsers(users);
-		User nice = new User("Neyas:+-+--+-+-+----+-------++---+-----+--+-+---++-+-+-++++-+++-+-+-+++++++-++-++++----++---++++------++++++----++---------+--++-+---+-++++++++--++++++---+++--++-");
+		User nice = new User("Neyas:--------++-------------+-++--------------+--------------------------+-+---------+++-+-++-+-+--+-+----+-+-+-+-++--+---+--+-+--+-++-++------+--+---++-+-+---++--+------+-+--+-+--+-----+------------+-+-++-+-++--+---+-+--------------+--------------+--+-+-+----------++--+-++--++-++--++---------");
 
 		ComparedUser[] list = nice.comparePlusses(users);
 		System.out.println("Sorted:");
@@ -19,7 +19,7 @@ class Main {
 	}
 
 	public static String[] createFilms() throws FileNotFoundException{
-		Scanner scFile = new Scanner(new File("text.txt"));
+		Scanner scFile = new Scanner(new File("mus.txt"));
 		String[] out = new String[0];
 		do {
 			out = append(out, scFile.nextLine());
@@ -36,7 +36,7 @@ class Main {
 	}
 	public static String[] getRecommendations(User user, ComparedUser[] list, String[] films) {
 		String[] recommendedFilms = new String[0];
-		final int threshold = 68;
+		final int threshold = 30;
 		for (ComparedUser cUser : list) {
 			if (cUser.getPercent() >= threshold) {
 				for (int i = 0; i < films.length; i++) {
@@ -59,7 +59,7 @@ class Main {
 		return false;
 	}
 	public static void createUsers(User[] users) throws FileNotFoundException {
-		Scanner scFile = new Scanner(new File("data.txt"));
+		Scanner scFile = new Scanner(new File("dataMus.txt"));
 		String temp;
 		int i = 0;
 		do {
