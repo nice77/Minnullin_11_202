@@ -48,7 +48,12 @@ class NaturalNumber extends Number {
 		}
 		for (int i = Math.min(this.size, other.size); i < Math.max(this.size, other.size); i++) {
 			out[i] = (this.size <= i) ? other.number[i] : this.number[i];
-			size++;
+		}
+		for (int i = out.length - 1; i >= 0; i--) {
+			if (out[i] != 0) {
+				size = out.length - i - 1;
+				break;
+			}
 		}
 		return new NaturalNumber(out, size);
 	}
@@ -73,7 +78,6 @@ class NaturalNumber extends Number {
 	}
 	public NaturalNumber mul(NaturalNumber other) {
 		NaturalNumber out = this.mulOnDigit(other.number[0]);
-		//System.out.println("Diff: " + this.mulOnDigit(other.number[0]));
 		NaturalNumber temp;
 		for (int i = 1; i < other.size; i++) {
 			temp = this.mulOnDigit(other.number[i]);
