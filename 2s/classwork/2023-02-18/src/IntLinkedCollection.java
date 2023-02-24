@@ -2,8 +2,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class IntLinkedCollection extends AbstractCollection {
-    private Elem head;
-    private int size;
+    protected Elem head;
+    protected int size;
     public IntLinkedCollection () {
         this.head = null;
         this.size = 0;
@@ -65,23 +65,25 @@ public class IntLinkedCollection extends AbstractCollection {
 
     @Override
     public boolean remove(Object o) {
-        if (head.getValue() == 0) {
-            head = head.getNext();
+        if (this.head == null) {
+            return true;
+        }
+        if (this.head.getValue() == o) {
+            this.head = this.head.getNext();
             this.size -= 1;
             return true;
         }
-        Elem p = head;
+        Elem p = this.head;
         while (p.getNext() != null) {
             if (p.getNext().getValue() == o) {
                 if (p.getNext().getNext() != null) {
                     p.setNext(p.getNext().getNext());
-                    this.size -= 1;
-                    return true;
                 }
                 else {
                     p.setNext(null);
-                    this.size -= 1;
                 }
+                this.size -= 1;
+                return true;
             }
             p = p.getNext();
         }

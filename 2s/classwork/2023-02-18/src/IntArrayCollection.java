@@ -2,10 +2,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class IntArrayCollection extends AbstractCollection {
-    private int capacity = 128;
-    private final double LOAD_FACTOR = 0.75;
-    private int size = 0;
-    private Integer[] arr;
+    protected int capacity = 128;
+    protected final double LOAD_FACTOR = 0.75;
+    protected int size = 0;
+    protected Integer[] arr;
     public IntArrayCollection() {
         this.arr = new Integer[this.capacity];
     }
@@ -37,7 +37,11 @@ public class IntArrayCollection extends AbstractCollection {
 
     @Override
     public Object[] toArray() {
-        return this.arr;
+        Object[] out = new Integer[this.size];
+        for (int i = 0; i < this.size; i++) {
+            out[i] = this.arr[i];
+        }
+        return out;
     }
 
     @Override
@@ -53,7 +57,7 @@ public class IntArrayCollection extends AbstractCollection {
         return true;
     }
 
-    private Integer[] checkAndResize() {
+    protected Integer[] checkAndResize() {
         if (this.size > this.capacity * LOAD_FACTOR) {
             Integer[] temp = new Integer[(int) (this.capacity + this.capacity * LOAD_FACTOR)];
             for (int i = 0; i < this.capacity; i++) {
@@ -67,29 +71,40 @@ public class IntArrayCollection extends AbstractCollection {
 
     @Override
     public boolean remove(Object o) {
-        Integer[] temp = new Integer[this.capacity];
-        int i = 0, j = 0;
-        while (j != this.size) {
-            if (this.arr[i] == o) {
-                i += 1;
-                this.size -= 1;
+        if (this.contains(o)) {
+            Integer[] temp = new Integer[this.capacity];
+            int j = 0;
+            boolean found = false;
+            for (int i = 0; i < this.size; i++) {
+                if (this.arr[i] == o && !found) {
+                    found = true;
+                }
+                else {
+                    temp[j] = this.arr[i];
+                    j++;
+                }
             }
-            temp[j] = this.arr[i];
-            i += 1;
-            j += 1;
+            this.arr = temp;
+            this.size -= 1;
         }
-        this.arr = temp;
         return true;
     }
 
-
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        for (Integer x : this.arr) {
+            if (!c.contains(x)) {
+                this.remove(x);
+            }
+        }
+        return true;
     }
 
     @Override
     public void clear() {
-
+        for (int i = 0; i < this.size; i++) {
+            this.arr[i] = null;
+        }
+        this.size = 0;
     }
 }

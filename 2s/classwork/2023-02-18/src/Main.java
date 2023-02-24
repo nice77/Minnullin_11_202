@@ -1,13 +1,16 @@
 import java.util.Collection;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        IntArrayCollection iac = new IntArrayCollection();
-        Collection<Integer> removable = new IntArrayCollection();
-        for (int i = 0; i < 10; i++) {
-            removable.add(i);
+        Collection<Integer> arr = new IntLinkedCollection();
+        Collection<Integer> toAdd = new IntLinkedCollection();
+        for (int i = 0; i < 3; i++) {
+            toAdd.add(i);
         }
-//        iac.removeAll(removable);
-        System.out.println(iac.size());
+        arr.addAll(toAdd);
+        System.out.println(Arrays.toString(arr.toArray()) + "; " + arr.size());
+        arr.removeAll(toAdd);
+        System.out.println(Arrays.toString(arr.toArray()));
     }
 }
