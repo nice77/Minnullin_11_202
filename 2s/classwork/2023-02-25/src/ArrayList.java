@@ -1,7 +1,4 @@
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ArrayList<T> extends ArrayCollection<T> implements List<T> {
 
@@ -107,14 +104,6 @@ public class ArrayList<T> extends ArrayCollection<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        T[] temp = (T[]) new Object[toIndex - fromIndex];
-        for (int i = fromIndex; i < toIndex; i++) {
-            temp[i - fromIndex] = this.arr[i];
-        }
-        List<T> out = new ArrayList<>();
-        for (int i = 0; i < temp.length; i++) {
-            out.add(temp[i]);
-        }
-        return out;
+        return new SubList<T>(this, fromIndex, toIndex);
     }
 }

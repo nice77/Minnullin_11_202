@@ -120,20 +120,6 @@ public class LinkedList<T> extends LinkedCollection<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        int i = 0;
-        Elem<T> pointer = this.head;
-        T[] temp = (T[]) new Object[toIndex - fromIndex];
-        while (pointer.getNext() != null) {
-            if (i >= fromIndex && i < toIndex) {
-                temp[i - fromIndex] = pointer.getValue();
-            }
-            i++;
-            pointer = pointer.getNext();
-        }
-        List<T> out = new LinkedList<>();
-        for (int j = toIndex - fromIndex; j > 0; j--) {
-            out.add(temp[i]);
-        }
-        return out;
+        return new SubList<>(this, fromIndex, toIndex);
     }
 }
