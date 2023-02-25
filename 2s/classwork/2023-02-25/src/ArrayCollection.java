@@ -4,20 +4,9 @@ import java.util.Iterator;
 public class ArrayCollection<T> extends AbstractCollection<T> {
     protected int capacity = 128;
     protected static final double LOAD_FACTOR = 0.75;
-    protected int size = 0;
     protected T[] arr;
     public ArrayCollection() {
         this.arr = (T[]) new Object[this.capacity];
-    }
-
-    @Override
-    public int size() {
-        return this.size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.size == 0;
     }
 
     @Override

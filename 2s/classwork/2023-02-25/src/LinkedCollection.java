@@ -3,24 +3,8 @@ import java.util.Iterator;
 
 public class LinkedCollection<T> extends AbstractCollection<T> {
     protected Elem<T> head;
-    protected int size;
-    public LinkedCollection () {
+    public LinkedCollection() {
         this.head = null;
-        this.size = 0;
-    }
-
-    public Elem<T> getHead() {
-        return this.head;
-    }
-
-    @Override
-    public int size() {
-        return this.size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.size == 0;
     }
 
     @Override
@@ -92,7 +76,12 @@ public class LinkedCollection<T> extends AbstractCollection<T> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        for (Object x : c) {
+            if (!this.contains(x)) {
+                this.remove(x);
+            }
+        }
+        return true;
     }
 
     @Override

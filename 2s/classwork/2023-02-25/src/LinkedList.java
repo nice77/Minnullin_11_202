@@ -3,78 +3,93 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class LinkedList<T> extends LinkedCollection<T> implements List<T> {
+
     public LinkedList() {
         super();
     }
-    @Override
-    public boolean addAll(int index, Collection<? extends T> c) {
-        int i = index;
-        for (T x : c) {
-            this.add(i, x);
+
+    public LinkedList(Elem<T> head, int fromIndex, int toIndex) {
+        this.head = head;
+        int i = 0;
+        while (i != fromIndex) {
+            this.head = this.head.getNext();
             i++;
         }
-        return true;
+        this.size = toIndex - fromIndex;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends T> c) {
+        return false;
     }
 
     @Override
     public T get(int index) {
-        Elem<T> pointer = this.head;
         int i = 0;
-        while (pointer.getNext() != null) {
+        Elem<T> p = this.head;
+        while (p.getNext() != null && i < this.size) {
             if (i == index) {
-                return pointer.getValue();
+                return p.getValue();
             }
-            pointer = pointer.getNext();
+            p = p.getNext();
+            i++;
         }
         return null;
     }
 
     @Override
     public T set(int index, T element) {
-        Elem<T> pointer = this.head;
         int i = 0;
-        while (pointer.getNext() != null) {
+        Elem<T> p = this.head;
+        while (p.getNext() != null && i < this.size) {
             if (i == index) {
-                T temp = pointer.getValue();
-                pointer.setValue(element);
+                T temp = p.getValue();
+                p.setValue(element);
                 return temp;
             }
-            pointer = pointer.getNext();
+            p = p.getNext();
+            i++;
         }
         return null;
     }
 
     @Override
     public void add(int index, T element) {
-        Elem<T> pointer = this.head;
         int i = 0;
-        while (pointer.getNext() != null) {
+        Elem<T> p = this.head;
+        while (p.getNext() != null && i < this.size) {
             if (i + 1 == index) {
-                Elem<T> toAdd = new Elem<T>(element, pointer.getNext());
-                pointer.setNext(toAdd);
+                Elem<T> temp = new Elem<>(element, p.getNext());
+                p.setNext(temp);
+                this.size += 1;
                 return;
             }
-            pointer = pointer.getNext();
+            p = p.getNext();
             i++;
         }
     }
 
     @Override
     public T remove(int index) {
-        Elem<T> pointer = this.head;
         int i = 0;
-        while (pointer.getNext() != null) {
+        if (i == index) {
+            this.head = this.head.getNext();
+            this.size -= 1;
+        }
+        Elem<T> p = this.head;
+        while (p.getNext() != null && i < this.size) {
             if (i + 1 == index) {
-                T temp = pointer.getNext().getValue();
-                if (pointer.getNext().getNext() != null) {
-                    pointer.setNext(pointer.getNext().getNext());
+                Elem<T> temp = p.getNext();
+                if (p.getNext().getNext() != null) {
+                    p.setNext(p.getNext().getNext());
                 }
                 else {
-                    pointer.setNext(null);
+                    p.setNext(null);
                 }
-                return temp;
+                this.size -= 1;
+                return temp.getValue();
             }
-            pointer = pointer.getNext();
+            p = p.getNext();
             i++;
         }
         return null;
@@ -82,13 +97,13 @@ public class LinkedList<T> extends LinkedCollection<T> implements List<T> {
 
     @Override
     public int indexOf(Object o) {
-        Elem<T> pointer = this.head;
+        Elem<T> p = this.head;
         int i = 0;
-        while (pointer.getNext() != null) {
-            if (pointer.getValue().equals(o)) {
+        while (p.getNext() != null) {
+            if (p.getValue().equals(o)) {
                 return i;
             }
-            pointer = pointer.getNext();
+            p = p.getNext();
             i++;
         }
         return -1;
@@ -96,13 +111,13 @@ public class LinkedList<T> extends LinkedCollection<T> implements List<T> {
 
     @Override
     public int lastIndexOf(Object o) {
-        Elem<T> pointer = this.head;
-        int i = 0, max = 0;
-        while (pointer.getNext() != null) {
-            if (pointer.getValue().equals(o)) {
+        Elem<T> p = this.head;
+        int i = 0, max = -1;
+        while (p.getNext() != null) {
+            if (p.getValue().equals(o)) {
                 max = i;
             }
-            pointer = pointer.getNext();
+            p = p.getNext();
             i++;
         }
         return max;
@@ -120,6 +135,6 @@ public class LinkedList<T> extends LinkedCollection<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return new SubList<>(this, fromIndex, toIndex);
+        return new LinkedList(this.head, fromIndex, toIndex);
     }
 }
