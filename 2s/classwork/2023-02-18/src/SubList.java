@@ -1,11 +1,10 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class SubList<T> extends ArrayList<T> {
-    private final List<T> reference;
+public class SubList extends IntArrayList {
+    private final List<Integer> reference;
     private final int fromIndex, size;
 
-    public SubList(List<T> reference, int fromIndex, int toIndex) {
+    public SubList(List<Integer> reference, int fromIndex, int toIndex) {
         this.reference = reference;
         this.fromIndex = fromIndex;
         this.size = toIndex - fromIndex;
@@ -15,15 +14,15 @@ public class SubList<T> extends ArrayList<T> {
         return this.size;
     }
 
-    public T get(int index) {
+    public Integer get(int index) {
         return this.checkIndex(index) ? this.reference.get(this.fromIndex + index) : null;
     }
 
-    public T set(int index, T elem) {
+    public Integer set(int index, Integer elem) {
         if (!this.checkIndex(index)) {
             return null;
         }
-        T temp = this.get(index);
+        Integer temp = this.get(index);
         this.reference.set(this.fromIndex + index, elem);
         return temp;
     }

@@ -107,14 +107,6 @@ public class IntArrayList extends IntArrayCollection implements List<Integer> {
 
     @Override
     public List<Integer> subList(int fromIndex, int toIndex) {
-        Integer[] temp = new Integer[toIndex - fromIndex];
-        for (int i = fromIndex; i < toIndex; i++) {
-            temp[i - fromIndex] = this.arr[i];
-        }
-        List<Integer> out = new IntArrayList();
-        for (int i = 0; i < temp.length; i++) {
-            out.add(i);
-        }
-        return out;
+        return new SubList(this, fromIndex, toIndex);
     }
 }
