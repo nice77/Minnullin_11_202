@@ -8,7 +8,12 @@ public class IntLinkedList extends IntLinkedCollection implements List<Integer> 
     }
     @Override
     public boolean addAll(int index, Collection<? extends Integer> c) {
-        return false;
+        int i = index;
+        for (Integer x : c) {
+            this.add(i, x);
+            i++;
+        }
+        return true;
     }
 
     @Override
