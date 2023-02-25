@@ -97,6 +97,7 @@ public class IntLinkedCollection extends AbstractCollection {
 
     @Override
     public void clear() {
-
+        this.head = null;
+        this.size = 0;
     }
 }
