@@ -3,8 +3,8 @@ import java.util.Collection;
 abstract public class AbstractCollection<T> implements Collection<T> {
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        for (Object o : c.toArray()) {
-            this.add((T) o);
+        for (Object x : c.toArray()) {
+            this.add((T) x);
         }
         return true;
     }

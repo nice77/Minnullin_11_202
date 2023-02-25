@@ -3,7 +3,7 @@ import java.util.Iterator;
 
 public class IntArrayCollection extends AbstractCollection {
     protected int capacity = 128;
-    protected final double LOAD_FACTOR = 0.75;
+    protected static final double LOAD_FACTOR = 0.75;
     protected int size = 0;
     protected Integer[] arr;
     public IntArrayCollection() {
