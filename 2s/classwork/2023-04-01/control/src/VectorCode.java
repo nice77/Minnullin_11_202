@@ -121,10 +121,10 @@ public class VectorCode {
         Elem p = this.list.getHead();
         int out = 0;
         for (int j = 0; j <= i; j++) {
-            if (p.getValue()[0] == j) {
+            if (p != null && p.getValue()[0] == j) {
                 out += p.getValue()[1];
+                p = p.getNext();
             }
-            p = p.getNext();
         }
         return out;
     }
