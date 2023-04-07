@@ -1,0 +1,21 @@
+1:Niyaz:Minnullin:Llanfairpwllgwyngyl:2004
+2:Rasim:Kayumov:Nizhnekamsk:2004
+3:Emil:Belov:Zelenodolsk:2004
+4:Nargiz:Abdullin:Kazan:2004
+5:Nastya:Arduganova:Neftekamsk:2004
+6:Marsel:Gazizov:Kazan:2004
+7:Danil:Dyakov:London:2004
+8:Yaroslav:Efremov:Zelenodolsk:2004
+9:Valeria:Saparina:Kazan:2003
+10:Artur:Myltykbaev:Nizhnekamsk:3002
+11:Egor:Lazarev:Penza:2004
+12:Ernest:Farukshin:Nabereznye Chelny:2004
+13:Vladimir:Varukhin:Kazan:2004
+14:Alina:Radzhapbaeva:Kazan:2004
+16:Nikolay:Husanov:Kazan:2004
+18:Aybulat:Akhmadiev:Kazan:2004
+17:Elina:Nurgaleeva:Ufa:2004
+19:Oleg:Turov:Nabereznye Chelny:2004
+15:Regina:Ivanova:Kazan:2004
+22:Danil:Khairulin:Kazan:2004
+23:Margarita:Shcherbakova:Orenburg:2004
