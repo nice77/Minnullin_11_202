@@ -23,6 +23,6 @@
 hs_err_pid*
 
 .idea/
-.out/
+out/
 
 task04/*.jpg
