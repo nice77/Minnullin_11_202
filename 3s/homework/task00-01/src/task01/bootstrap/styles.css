@@ -1,0 +1,13 @@
+.title-image {
+    width: 80%;
+    align-self: center;
+}
+
+.rangers-image {
+    width: 100%;
+}
+
+.imager {
+    display: flex;
+    justify-content: center;
+}

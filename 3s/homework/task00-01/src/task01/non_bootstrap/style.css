@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.page {
+    display: grid;
+    grid-template-columns: 2fr 5fr 2fr;
+    margin: 3% auto;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    grid-template-rows: 1.5fr 1fr 4fr;
+    grid-column-start: 2;
+    column-gap: 5%;
+    row-gap: 1%;
+    padding: 20px;
+    padding-right: 40px;
+    box-shadow: 5px 5px 20px black;
+}
+
+.title {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    align-self: end;
+    justify-self: center;
+    font-family: Calibri, serif;
+}
+
+.title-image {
+    width: 192px;
+    height: 144px;
+    align-self: center;
+}
+
+.rangers-image {
+    width: 280px;
+    height: 135px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    justify-self: center;
+    align-self: center;
+}
+
+.after-image-text {
+    grid-column-start: 3;
+    grid-row-start: 2;
+    grid-row-end: 4;
+}
