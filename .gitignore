@@ -26,3 +26,5 @@ hs_err_pid*
 out/
 
 task04/*.jpg
+
+/.gitignore
