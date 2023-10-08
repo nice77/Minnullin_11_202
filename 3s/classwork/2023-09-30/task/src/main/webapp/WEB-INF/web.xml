@@ -4,9 +4,19 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <filter>
+        <filter-name>filter</filter-name>
+        <filter-class>com.example.task.Filter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>filter</filter-name>
+        <url-pattern>/vote</url-pattern>
+    </filter-mapping>
+
+
     <servlet>
         <servlet-name>auth</servlet-name>
-        <servlet-class>com.example.demo.AuthServlet</servlet-class>
+        <servlet-class>com.example.task.AuthServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>auth</servlet-name>
@@ -15,7 +25,7 @@
 
     <servlet>
         <servlet-name>register</servlet-name>
-        <servlet-class>com.example.demo.RegisterServlet</servlet-class>
+        <servlet-class>com.example.task.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
@@ -24,16 +34,16 @@
 
     <servlet>
         <servlet-name>vote</servlet-name>
-        <servlet-class>com.example.demo.VotingServlet</servlet-class>
+        <servlet-class>com.example.task.VotingServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>vote</servlet-name>
         <url-pattern>/vote</url-pattern>
     </servlet-mapping>
 
-    <session-config>
-        <cookie-config>
-            <max-age>-1</max-age>
-        </cookie-config>
-    </session-config>
+<!--    <session-config>-->
+<!--        <cookie-config>-->
+<!--            <max-age>-1</max-age>-->
+<!--        </cookie-config>-->
+<!--    </session-config>-->
 </web-app>
