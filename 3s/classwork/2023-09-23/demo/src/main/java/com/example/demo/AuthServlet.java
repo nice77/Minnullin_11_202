@@ -4,13 +4,19 @@ import java.io.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
+import java.sql.*;
 
 public class AuthServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("./auth.html");
-        dispatcher.forward(request, response);
+        if (request.getSession().getAttribute("user") != null) {
+            response.sendRedirect(request.getContextPath() + "/vote");
+        }
+        else {
+            response.setContentType("text/html");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("./auth.html");
+            dispatcher.forward(request, response);
+        }
     }
 
     @Override

@@ -1,0 +1,121 @@
+header {
+    background-color: var(--color-background-tertiary);
+    display: flex;
+    border-bottom: solid 1px var(--color-background-secondary);
+}
+
+header:nth-child(1) {
+    padding: 0 16px;
+    cursor: default;
+}
+
+body {
+    background-color: var(--color-background-main);
+}
+
+.main-page {
+    display: flex;
+    align-items: start;
+    margin: 16px 0;
+    justify-content: center;
+}
+
+/* menu */
+.main-page__menu {
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px;
+}
+
+.menu__button {
+    margin: 0;
+    font-size: 12pt;
+    text-align: start;
+    height: 30px;
+    width: 164px;
+    background-color: var(--color-background-main);
+    border: none;
+    border-radius: 8px;
+    color: var(--color-white);
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+.menu__button:hover {
+    background-color: var(--color-background-secondary);
+}
+
+.main-page__element {
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px;
+    min-width: 50vw;
+    align-items: center;
+    opacity: 0;
+}
+
+/* profile content */
+
+.profile-header {
+    border-radius: 16px;
+    padding: 8px;
+    background-color: var(--color-background-secondary);
+    display: flex;
+    align-items: end;
+    width: 100%;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    margin: 8px;
+    mask-image: url("../assets/masks/1.png");
+    -webkit-mask-image: url("../assets/masks/1.png");
+    mask-size: 150px 150px;
+    -webkit-mask-size: 150px 150px;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+}
+
+.profile-button {
+    margin: 8px 0;
+    height: auto;
+    width: 100%;
+    font-size: 16pt;
+    text-align: center;
+    padding: 8px;
+}
+
+/* settings */
+
+.main-page__settings-form {
+    background-color: var(--color-background-secondary);
+    border-radius: 8px;
+    padding: 16px;
+}
+.main-page__settings-form > * {
+    margin: 8px;
+}
+
+#inputFileUploader {
+    display: none;
+}
+#clickToUpload {
+    cursor: pointer;
+}
+
+.submit-button {
+    background-color: var(--color-green);
+    cursor: pointer;
+}
+
+/* vacancies */
+.vacancies {
+    background-color: var(--color-background-secondary);
+    border-radius: 16px;
+}

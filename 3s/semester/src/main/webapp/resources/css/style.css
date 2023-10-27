@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: futura-medium;
+}
+
+@font-face {
+    src: url("../assets/fonts/FuturaPT-Medium.woff2");
+    font-family: futura-medium;
+}
+
+@font-face {
+    src: url("../assets/fonts/FuturaPT-Bold.woff2");
+    font-family: futura-bold;
+}
+
+:root {
+    --color-background-main: #141414;
+    --color-background-secondary: #333;
+    --color-background-tertiary: #222;
+    --color-white: #fff;
+    --color-green: #4bb34b;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-white);
+    padding: 8px;
+}
+
+input, a {
+    background-color: var(--color-background-tertiary);
+    padding: 12px 8px;
+    color: var(--color-white);
+    border: none;
+    margin: 8px;
+    outline: none;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 12pt;
+}
+
+input::-webkit-file-upload-button {
+    background-color: var(--color-background-secondary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 8px;
+    padding: 4px;
+    font-family: futura-medium;
+}
+
+a {
+    text-align: center;
+    text-decoration: none;
+}
