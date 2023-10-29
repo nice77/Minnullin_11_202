@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.server.UID;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @WebServlet(value="/profile")
 public class ProfileServlet extends HttpServlet {
@@ -28,15 +30,28 @@ public class ProfileServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         Map<String, Object> root = new HashMap<>();
-        User user = (new UserDAO()).getAll()
-                .stream()
-                .filter(u -> u.getEmail().equals(req.getSession().getAttribute("user")))
-                .findFirst().get();
         root.put("path", "/profile");
-        root.put("userType", req.getSession().getAttribute("userType"));
+        root.put("userType", "user");
+        User user;
+        UserDAO userDAO = new UserDAO();
+        if (req.getParameter("userId") == null) {
+            user = userDAO.getByEmail(req.getSession().getAttribute("user").toString());
+            root.put("currentUser", true);
+        }
+        else {
+            user = (new UserDAO()).get(Integer.parseInt(req.getParameter("userId")));
+            if (user.getId() == userDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId()) {
+                root.put("currentUser", true);
+            }
+            else {
+                root.put("currentUser", false);
+            }
+        }
         root.put("user", user);
-        System.out.println();
-        root.put("posts", (new PostDAO()).getAll());
+        root.put("posts", (new PostDAO()).getAll()
+                .stream()
+                .filter(p -> p.getUserId() == user.getId())
+                .collect(Collectors.toList()));
         Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/main-page.ftl");
         try {
             tmpl.process(root, resp.getWriter());

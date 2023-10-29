@@ -2,6 +2,7 @@ package com.example.semester.servlets.main_page;
 
 
 import com.example.semester.DAO.CompanyDAO;
+import com.example.semester.DAO.VacancyDAO;
 import com.example.semester.models.Company;
 import com.example.semester.config.FreemarkerConfig;
 import freemarker.template.Template;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @WebServlet(value="/company")
 public class CompanyServlet extends HttpServlet {
@@ -28,14 +30,32 @@ public class CompanyServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         Map<String, Object> root = new HashMap<>();
-        Company company = (new CompanyDAO()).getAll()
-                .stream()
-                .filter(u -> u.getEmail().equals(req.getSession().getAttribute("user")))
-                .findFirst().get();
         root.put("path", "/company");
-        root.put("userType", req.getSession().getAttribute("userType"));
+        CompanyDAO companyDAO = new CompanyDAO();
+        Company company;
+
+
+        root.put("userType", "company");
+        if (req.getParameter("companyId") == null) {
+            company = companyDAO.getByEmail(req.getSession().getAttribute("user").toString());
+            root.put("currentUser", true);
+        }
+        else {
+            company = companyDAO.get(Integer.parseInt(req.getParameter("companyId")));
+            if (company.getId() == companyDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId()) {
+                root.put("currentUser", true);
+            }
+            else {
+                root.put("currentUser", false);
+            }
+        }
+
         root.put("user", company);
-        root.put("posts", (new CompanyDAO()).getAll());
+        VacancyDAO vacancyDAO = new VacancyDAO();
+        root.put("posts", vacancyDAO.getAll()
+                .stream()
+                .filter(v -> v.getCompanyId() == company.getId())
+                .collect(Collectors.toList()));
         Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/main-page.ftl");
         try {
             tmpl.process(root, resp.getWriter());
