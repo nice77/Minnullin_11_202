@@ -11,7 +11,7 @@ public class CompanyFilter extends HttpFilter {
     @Override
     public void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         System.out.println("Company filter called");
-        if (req.getSession().getAttribute("userType").equals("user")) {
+        if (req.getSession().getAttribute("userType").equals("user") && req.getParameter("companyId") == null) {
             res.sendRedirect("./profile");
             return;
         }
