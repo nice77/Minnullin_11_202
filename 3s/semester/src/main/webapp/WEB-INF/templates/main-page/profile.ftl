@@ -1,6 +1,6 @@
 <#macro profile>
-    <div class="main-page__element main-page__profile-container">
-        <div class="profile-header">
+    <div class="main-page__element">
+        <div class="content-header">
 
             <#if user.getAvatar() == "default.png">
                 <img class="profile-picture" src="./resources/assets/images/default.png" alt="No avatar">
@@ -15,19 +15,23 @@
             </#if>
 
         </div>
-        <div class="profile-content">
-            <#if userType == "user">
-                <#assign fieldName="Новая запись дневника">
-            <#else>
-                <#assign fieldName="Анонс нового испытания">
-            </#if>
-            <input type="button" class="menu__button profile-button" value="${fieldName}" id="createNewBtn">
-        </div>
-        <#list posts as post>
-            ${post}
-        <#else>
-            <h3>No posts</h3>
-        </#list>
-<#--        Добавить список всех записей дневника / вакансий -->
+        <#if currentUser>
+            <div class="content-container">
+                <#if userType == "user">
+                    <#assign fieldName="Новая запись дневника">
+                <#else>
+                    <#assign fieldName="Анонс нового испытания">
+                </#if>
+                <input type="button" class="menu__button profile-button" value="${fieldName}" id="createNewBtn">
+            </div>
+        </#if>
+
+        <#if userType == "user">
+            <#include "./profile-list-types/diary-list-type.ftl">
+            <@diaryListType/>
+        <#elseif userType == "company">
+            <#include "./profile-list-types/vacancy-list-type.ftl">
+            <@vacancyListType/>
+        </#if>
     </div>
 </#macro>
