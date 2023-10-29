@@ -53,7 +53,7 @@ public class RegistrationServlet extends HttpServlet {
             CompanyDAO companyDAO = new CompanyDAO();
             Company company = new Company(-1, req.getParameter("name"),
                     req.getParameter("phone"), req.getParameter("email"),
-                    req.getParameter("password"), "", "");
+                    req.getParameter("password"), null, "default.png");
             System.out.println(company.getName() + ", " + company.getPhoneNumber() + ", " + company.getEmail() + ", "
                     + company.getHashedPassword() + ", " + company.getAbout());
             companyDAO.add(company);
