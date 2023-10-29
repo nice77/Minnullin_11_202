@@ -6,10 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FindCure</title>
     <link rel="icon" href="./resources/assets/svg/leaf.svg">
+
     <link rel="stylesheet" href="./resources/css/style.css">
-    <link rel="stylesheet" href="./resources/css/style-profile.css">
+    <link rel="stylesheet" href="./resources/css/style-main-page.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="./resources/js/main-page/script.js" defer></script>
+    <script src="./resources/js/jquery.js" defer></script>
+    <script src="./resources/js/script-main.js" defer></script>
+    <script src="./resources/js/main-page/script-vacancies.js" defer></script>
+    <script src="./resources/js/main-page/script-vacancies-spec.js" defer></script>
+    <script src="./resources/js/main-page/script-settings.js" defer></script>
+    <script src="./resources/js/main-page/script-profile-user.js" defer></script>
+    <script src="./resources/js/main-page/script-profile-company.js" defer></script>
+    <script src="./resources/js/main-page/script-company.js" defer></script>
+
 </head>
 <body>
 <header>
