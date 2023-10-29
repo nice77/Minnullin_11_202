@@ -1,0 +1,32 @@
+.textarea {
+    display: block;
+    width: 100%;
+    background-color: var(--color-background-tertiary);
+    outline: none;
+    border-radius: var(--border-radius);
+    padding: 8px;
+    color: var(--color-white);
+    overflow: hidden;
+    resize: both;
+}
+
+.textarea > * {
+    background-color: var(--color-background-tertiary);
+    color: var(--color-white);
+}
+
+#hiddenInputField {
+    display: none;
+}
+
+h4 {
+    margin: 0;
+}
+
+#inputFileUploader {
+    display: none;
+}
+
+#clickToUpload {
+    cursor: pointer;
+}
