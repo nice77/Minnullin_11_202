@@ -2,6 +2,7 @@ package com.example.semester.utils;
 
 import com.example.semester.DAO.CompanyDAO;
 import com.example.semester.DAO.UserDAO;
+import com.example.semester.database.DB;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +11,20 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Service {
     // method getClassName is used to process class name from table name
-    public static String getNaym(String name) {
+    public static String getClassName(String name) {
         String out;
         out = name.substring(0, name.length() - 1).replace("ie", "y");
         out = out.substring(0, 1).toUpperCase() + out.substring(1);
@@ -37,7 +47,7 @@ public class Service {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    //
+    // getColumnName is used to process column name from class attribute name
     public static String getColumnName(String name) {
         for (int i = 0; i < name.length(); i++) {
             char letter = name.charAt(i);
@@ -48,6 +58,7 @@ public class Service {
         }
         return name;
     }
+
 
     public static String getTableName(String classPath) {
         String[] classPathSplit = classPath.split("\\.");
@@ -67,6 +78,7 @@ public class Service {
         return (new CompanyDAO()).getAll().stream().anyMatch(c -> c.getEmail().equals(email) && c.getHashedPassword().equals(password));
     }
 
+    // Method to write into file a new profile picture
     public static void writeToFile(InputStream is, String path, String name) {
         try {
             OutputStream os = new FileOutputStream(path + name);
@@ -81,6 +93,8 @@ public class Service {
         }
     }
 
+    // Used for setting userObject attributes using java.reflect inside SettingsServlet
+    // userObject may be an instance of models.Company or models.User
     public static void setObjectFields(Class<?> cls, HttpServletRequest req, Object userObject) {
         try {
             String resField;
@@ -106,8 +120,7 @@ public class Service {
                     Service.writeToFile(part.getInputStream(), path, name);
                     resField = name;
                 } else {
-                    resField = new BufferedReader(new InputStreamReader(part.getInputStream()))
-                            .lines().collect(Collectors.joining("\n"));
+                    resField = new BufferedReader(new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
                 }
                 m.invoke(userObject, resField);
             }
@@ -115,5 +128,25 @@ public class Service {
                  IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<Map<String, String>> executeQuery(String query) {
+        List<Map<String, String>> out = new LinkedList<>();
+        try (Statement s = DB.getInstance().getConnection().createStatement()) {
+            ResultSet rs = s.executeQuery(query);
+            ResultSetMetaData rsmt = rs.getMetaData();
+            while (rs.next()) {
+                Map<String, String> temp = new HashMap<>();
+                for (int i = 0; i < rsmt.getColumnCount(); i++) {
+                    temp.put(rsmt.getColumnLabel(i + 1), rs.getString(i + 1));
+                }
+                out.add(temp);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Got out: " + out);
+        return out;
     }
 }
