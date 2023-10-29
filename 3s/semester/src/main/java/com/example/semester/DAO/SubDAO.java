@@ -1,5 +1,6 @@
 package com.example.semester.DAO;
 
+import com.example.semester.database.DB;
 import com.example.semester.models.Sub;
 
 import java.sql.PreparedStatement;
@@ -10,6 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SubDAO extends AbstractDAO<Sub> {
+    public SubDAO() {
+        this.database = DB.getInstance();
+    }
     @Override
     public List<Sub> getAll() {
         try (Statement s = this.database.getConnection().createStatement()) {

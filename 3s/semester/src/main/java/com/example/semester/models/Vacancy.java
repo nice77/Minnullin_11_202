@@ -3,23 +3,23 @@ package com.example.semester.models;
 import java.util.Date;
 
 
-@ColumnName(name="vacancy")
+@ColumnName(name="vacancies")
 public class Vacancy {
-    private int id;
-    private int companyId;
+    private Integer id;
+    private Integer companyId;
     private String header;
     private String body;
     private Date creatingDate;
     private Date meetingDate;
-    private Date meetingPlace;
+    private String meetingPlace;
 
-    public Vacancy(int id,
-                   int companyId,
+    public Vacancy(Integer id,
+                   Integer companyId,
                    String header,
                    String body,
                    Date creatingDate,
                    Date meetingDate,
-                   Date meetingPlace) {
+                   String meetingPlace) {
         this.id = id;
         this.companyId = companyId;
         this.header = header;
@@ -29,8 +29,24 @@ public class Vacancy {
         this.meetingPlace = meetingPlace;
     }
 
+    public Vacancy() {
+        new Vacancy(-1, -1, null, null, new Date(), null, null);
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public String getHeader() {
@@ -65,7 +81,7 @@ public class Vacancy {
         this.meetingDate = meetingDate;
     }
 
-    public void setMeetingPlace(Date meetingPlace) {
+    public void setMeetingPlace(String meetingPlace) {
         this.meetingPlace = meetingPlace;
     }
 
@@ -77,7 +93,7 @@ public class Vacancy {
         return meetingDate;
     }
 
-    public Date getMeetingPlace() {
+    public String getMeetingPlace() {
         return meetingPlace;
     }
 }

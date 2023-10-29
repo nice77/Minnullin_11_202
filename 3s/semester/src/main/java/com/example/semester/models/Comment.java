@@ -2,14 +2,14 @@ package com.example.semester.models;
 
 @ColumnName(name="comments")
 public class Comment {
-    private int id;
-    private int postId;
-    private int userId;
+    private Integer id;
+    private Integer postId;
+    private Integer userId;
     private String text;
 
-    public Comment(int id,
-                   int postId,
-                   int userId,
+    public Comment(Integer id,
+                   Integer postId,
+                   Integer userId,
                    String text) {
         this.id = id;
         this.postId = postId;
@@ -17,15 +17,19 @@ public class Comment {
         this.text = text;
     }
 
-    public void setId(int id) {
+    public Comment() {
+        new Comment(-1, -1, -1, null);
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Integer postId) {
         this.postId = postId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

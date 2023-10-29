@@ -9,28 +9,36 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.List;
+import java.util.Date;
 
 abstract public class AbstractDAO<T> {
     protected DB database;
     protected Object transfer(ResultSet rs) {
         try {
             ResultSetMetaData rsmt = rs.getMetaData();
-            System.out.println(1);
-            String name = Service.getNaym(rsmt.getColumnName(1));
+            System.out.println("Column name: " + rsmt.getTableName(1));
+            String naym = rsmt.getTableName(1);
+            String name = Service.getClassName(naym);
             System.out.println("ClassName: com.example.semester.models." + name);
             Class<?> cls = Class.forName("com.example.semester.models." + name);
             Object obj = cls.newInstance();
 
             for (int i = 0; i < rsmt.getColumnCount(); i++) {
                 String columnName = rsmt.getColumnName(i + 1);
+                Method m;
                 if (columnName.indexOf('_') != -1) {
                     columnName = Service.getAttributeName(columnName);
                 }
-//                System.out.println("Getting method: " + "set" + Service.capitalize(columnName));
-                Method m = cls
-                        .getDeclaredMethod("set" + Service.capitalize(columnName),
-                                Class.forName(rsmt.getColumnClassName(i + 1)));
-//                System.out.println("Method for " + name + ": " + m.getName());
+                System.out.println("Getting method: " + "set" + Service.capitalize(columnName));
+                if (columnName.toLowerCase().contains("date")) {
+                    System.out.println("In date branch");
+                    m = cls.getDeclaredMethod("set" + Service.capitalize(columnName),
+                            Date.class);
+                }
+                else {
+                    m = cls.getDeclaredMethod("set" + Service.capitalize(columnName),
+                                    Class.forName(rsmt.getColumnClassName(i + 1)));
+                }
                 m.invoke(obj, rs.getObject(rsmt.getColumnLabel(i + 1)));
             }
             return obj;
@@ -42,7 +50,7 @@ abstract public class AbstractDAO<T> {
     private String getUpdateQuery(String tableName) {
         try {
             String query = "update " + tableName + " set ";
-            Class cls = Class.forName("com.example.semester.models." + Service.getNaym(tableName));
+            Class cls = Class.forName("com.example.semester.models." + Service.getClassName(tableName));
             for (Field field : cls.getDeclaredFields()) {
                 System.out.println("Field: " + field.getName());
                 if (!field.getName().equals("id")) {
@@ -88,7 +96,8 @@ abstract public class AbstractDAO<T> {
         }
     }
 
-    private void insertValue(T element, Class cls, String query, boolean ignoreId) {
+
+    private void insertValue(T element, Class<?> cls, String query, boolean ignoreId) {
         try {
             PreparedStatement ps = this.database.getConnection().prepareStatement(query);
             for (int i = 0; i < cls.getDeclaredFields().length; i++) {
@@ -97,9 +106,9 @@ abstract public class AbstractDAO<T> {
                 String className = field.getType().getName();
                 Method m = cls.getDeclaredMethod("get" + Service.capitalize(field.getName()));
 
-                if (className.contains("int")) {
+                if (className.toLowerCase().contains("int")) {
                     if (!field.getName().equals("id")) {
-                        ps.setInt(i + 1, (Integer) m.invoke(element));
+                        ps.setInt(i, (Integer) m.invoke(element));
                     }
                     else if (!ignoreId) {
                         ps.setInt(cls.getDeclaredFields().length, (Integer) m.invoke(element));
@@ -109,7 +118,7 @@ abstract public class AbstractDAO<T> {
                     ps.setString(i, (String) m.invoke(element));
                 }
                 else {
-                    ps.setDate(i, (Date) m.invoke(element));
+                    ps.setDate(i, new java.sql.Date(((Date) m.invoke(element)).getTime()));
                 }
             }
             ps.executeUpdate();

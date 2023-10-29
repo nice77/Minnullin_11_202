@@ -3,27 +3,41 @@ package com.example.semester.models;
 
 @ColumnName(name="subs")
 public class Sub {
-    private int vacancyId;
-    private int userId;
+    private Integer id;
+    private Integer vacancyId;
+    private Integer userId;
 
-    public Sub(int vacancyId, int userId) {
+    public Sub(Integer id, Integer vacancyId, Integer userId) {
+        this.id = id;
         this.vacancyId = vacancyId;
         this.userId = userId;
     }
 
-    public void setVacancyId(int vacancyId) {
-        this.vacancyId = vacancyId;
+    public Sub() {
+        new Sub(null, null, null);
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public Integer getId() {
+        return id;
     }
 
-    public int getVacancyId() {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getVacancyId() {
         return vacancyId;
     }
 
-    public int getUserId() {
+    public void setVacancyId(Integer vacancyId) {
+        this.vacancyId = vacancyId;
+    }
+
+    public Integer getUserId() {
         return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
