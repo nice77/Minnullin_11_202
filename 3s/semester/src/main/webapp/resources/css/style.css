@@ -21,9 +21,10 @@
     --color-background-tertiary: #222;
     --color-white: #fff;
     --color-green: #4bb34b;
+    --border-radius: 8px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, label {
     color: var(--color-white);
     padding: 8px;
 }
@@ -35,7 +36,7 @@ input, a {
     border: none;
     margin: 8px;
     outline: none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     width: 100%;
     font-size: 12pt;
 }
@@ -44,7 +45,7 @@ input::-webkit-file-upload-button {
     background-color: var(--color-background-secondary);
     color: var(--color-white);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     padding: 4px;
     font-family: futura-medium;
 }
@@ -52,4 +53,16 @@ input::-webkit-file-upload-button {
 a {
     text-align: center;
     text-decoration: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 20vw;
+
+    background-color: var(--color-background-secondary);
+    padding: 1%;
+    border-radius: 8px;
+    margin: 10px 0;
 }
