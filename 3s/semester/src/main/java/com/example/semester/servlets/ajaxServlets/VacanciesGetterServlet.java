@@ -17,8 +17,6 @@ import java.io.IOException;
 public class VacanciesGetterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        VacancyDAO vacancyDAO = new VacancyDAO();
-        SubDAO subDAO = new SubDAO();
         UserDAO userDAO = new UserDAO();
         String query = "select vacancies.* from vacancies\n" +
                 "except select vacancies.* from vacancies\n" +
