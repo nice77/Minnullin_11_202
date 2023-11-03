@@ -91,7 +91,7 @@ public class VacanciesServlet extends HttpServlet {
             root.put("vacanciesMapList", data);
         }
 
-        Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/main-page.ftl");
+        Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/vacancies.ftl");
         try {
             tmpl.process(root, resp.getWriter());
         } catch (TemplateException e) {

@@ -11,6 +11,7 @@
             Автор: <a class="link" href="./profile?userId=${currentCardObj[1].getId()}">${currentCardObj[1].getName()}</a>
         </h4>
     </div>
-    <input type="button" value="Get commentaries" id="getCommentaries">
+    <div class="commentaries-list"></div>
+    <input type="button" value="Get commentaries" id="getCommentaries" data-postId="${postObj.getId()}">
     <div class="comments-list"></div>
 </#macro>

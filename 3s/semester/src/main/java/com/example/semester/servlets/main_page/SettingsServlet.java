@@ -53,7 +53,7 @@ public class SettingsServlet extends HttpServlet {
             root.put("user", company);
         }
 
-        Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/main-page.ftl");
+        Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/settings-main.ftl");
         try {
             tmpl.process(root, resp.getWriter());
         } catch (TemplateException e) {
