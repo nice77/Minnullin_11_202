@@ -7,7 +7,7 @@ document.getElementById("bodyInput").oninput = (event) => {
     if (!edited) {
         edited = true
         const elem = document.getElementById("bodyInput")
-        elem.innerText = event.target.innerText.substring(5)
+        elem.innerText = event.target.innerText.substring(event.target.innerText.length - 1)
 
         if(document.createRange)
         {

@@ -1,7 +1,7 @@
 const start = () => {
     gsap.to('.main-page__element', {
         opacity: 1,
-        duration: 0.3,
+        duration: 0.2,
         stagger: 0.1
     })
 }
@@ -9,10 +9,10 @@ const start = () => {
 start()
 
 const fade = (path) => {
-    gsap.to('.main-page__element', {
+    gsap.to('.main-page__element > *', {
         opacity: 0,
         duration: 0.3,
-        stagger: 0.1,
+        stagger: 0.01,
         onComplete: () => {
             window.location.href = path
         }

@@ -12,14 +12,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Service {
@@ -148,5 +146,35 @@ public class Service {
         }
         System.out.println("Got out: " + out);
         return out;
+    }
+
+
+    private static Statement spec;
+
+    static {
+        try {
+            spec = DB.getInstance().getConnection().createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void updateAndDeclareSQLTransaction(boolean started, String postId) {
+        try {
+            if (!started) {
+                spec = DB.getInstance().getConnection().createStatement();
+                spec.execute("begin;");
+                spec.execute("declare c1 cursor for select * from comments where post_id = " + postId);
+            }
+            else {
+                spec.execute("close c1");
+                spec.execute("commit");
+                spec.close();
+                spec = null;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }

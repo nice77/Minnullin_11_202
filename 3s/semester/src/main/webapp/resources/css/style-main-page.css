@@ -31,13 +31,11 @@ body {
     margin: 0;
     font-size: 12pt;
     text-align: start;
-    height: 30px;
-    width: 164px;
     background-color: var(--color-background-main);
     border: none;
     border-radius: var(--border-radius);
     color: var(--color-white);
-    padding: 0 16px;
+    padding: 4px 30px 4px 16px;
     cursor: pointer;
 }
 
@@ -169,8 +167,41 @@ body {
 }
 
 .link {
-    margin: 0;
-    padding: 0;
+    cursor: pointer;
+    margin: 8px 4px;
+    padding: 4px;
     background-color: transparent;
     text-decoration: underline;
+}
+
+.textarea {
+    display: block;
+    width: 100%;
+    background-color: var(--color-background-tertiary);
+    outline: none;
+    border-radius: var(--border-radius);
+    padding: 8px;
+    color: var(--color-white);
+    overflow: hidden;
+    resize: both;
+}
+
+.textarea > * {
+    background-color: var(--color-background-tertiary);
+    color: var(--color-white);
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.comment {
+    width: 100%;
+    margin: 1%;
+    padding: 4px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background-secondary);
 }
