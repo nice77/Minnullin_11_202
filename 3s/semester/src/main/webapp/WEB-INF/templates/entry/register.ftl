@@ -11,7 +11,7 @@
                 <input type="number" class="form__input" placeholder="phone" name="phone">
             </div>
         </div>
-        <input type="checkbox" id="company" name="company">
+        <input class="checkbox" type="checkbox" id="company" name="company">
         <label for="company">Компания</label>
         <div class="input-row">
             <input type="submit" class="form__button register" value="Зарегистрироваться" id="submit-btn" disabled>
