@@ -118,7 +118,12 @@ abstract public class AbstractDAO<T> {
                     ps.setString(i, (String) m.invoke(element));
                 }
                 else {
-                    ps.setDate(i, new java.sql.Date(((Date) m.invoke(element)).getTime()));
+                    if (m.invoke(element) == null) {
+                        ps.setDate(i, new java.sql.Date((new Date()).getTime()));
+                    }
+                    else {
+                        ps.setDate(i, new java.sql.Date(((Date) m.invoke(element)).getTime()));
+                    }
                 }
             }
             ps.executeUpdate();
