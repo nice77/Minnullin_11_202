@@ -56,7 +56,7 @@ public class CompanyServlet extends HttpServlet {
                 .stream()
                 .filter(v -> v.getCompanyId() == company.getId())
                 .collect(Collectors.toList()));
-        Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/main-page.ftl");
+        Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/profile.ftl");
         try {
             tmpl.process(root, resp.getWriter());
         } catch (TemplateException e) {
