@@ -34,4 +34,5 @@
         <filter-name>companyFilter</filter-name>
         <url-pattern>/company</url-pattern>
     </filter-mapping>
+    <request-character-encoding>UTF-8</request-character-encoding>
 </web-app>
