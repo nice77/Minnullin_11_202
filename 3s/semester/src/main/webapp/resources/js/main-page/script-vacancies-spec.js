@@ -1,4 +1,15 @@
 $(document).ready(() => {
+    let options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 1.0,
+    };
+    let callback = function (entries, observer) {
+        setTimeout(() => fetchCommentaries(), 500)
+    };
+    let observer = new IntersectionObserver(callback, options)
+    observer.observe(document.querySelector("#bottom-crosser"))
+
     const drawComments = (commentsList, toTop=false) => {
         let i = 0
         commentsList.forEach(item => {
@@ -21,18 +32,18 @@ $(document).ready(() => {
     let offset = 0
     let startOffset = 0
     const commentariesButton = $("#getCommentaries")
+    const bottomCrosser = $("#bottom-crosser")
     const fetchCommentaries = () => {
         $.ajax({
             url: "./commentsConnection",
             method: "GET",
             data: {
-                data: commentariesButton.attr('data-postId'),
+                data: bottomCrosser.attr('data-postId'),
                 offset: offset
             },
             success: (resultString) => {
                 if (resultString === "[]") {
-                    $("#getCommentaries").css("display", "none")
-                    alert("Комментариев более нет!")
+                    bottomCrosser.css("display", "none")
                 }
                 else if ($(".comments-list").children.length !== 0) {
                     drawComments(JSON.parse(resultString).slice(startOffset))
@@ -51,7 +62,7 @@ $(document).ready(() => {
             method: "POST",
             data: {
                 text: commentaryText,
-                post: commentariesButton.attr('data-postId')
+                post: bottomCrosser.attr('data-postId')
             },
             success: (resultString) => {
                 drawComments(JSON.parse(resultString), true)
@@ -89,7 +100,7 @@ $(document).ready(() => {
         bodyInputField.value = $("#bodyInput").innerText
     })
 
-    commentariesButton.on("click", () => fetchCommentaries())
+    // commentariesButton.on("click", () => fetchCommentaries())
     $("#postCommentary").on("click", (event) => {
         postCommentary($("#bodyInput").get(0).innerText)
         $("#bodyInput").get(0).innerText = "Комментарий"

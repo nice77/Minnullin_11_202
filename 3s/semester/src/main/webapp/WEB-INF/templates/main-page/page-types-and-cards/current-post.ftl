@@ -14,6 +14,6 @@
     <span type="text" id="bodyInput" class="textarea" role="textbox" contenteditable>Комментарий</span>
     <input type="button" value="Отправить" id="postCommentary">
     <div class="comments-list"></div>
-    <input type="button" value="Get commentaries" id="getCommentaries" data-postId="${postObj.getId()}">
-    <div class="bottom-crosser"></div>
+<#--    <input type="button" value="Get commentaries" id="getCommentaries" data-postId="${postObj.getId()}">-->
+    <div id="bottom-crosser" data-postId="${postObj.getId()}"></div>
 </#macro>

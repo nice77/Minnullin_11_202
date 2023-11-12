@@ -224,6 +224,11 @@ body {
     background-color: var(--color-background-secondary);
 }
 
+#bottom-crosser {
+    height: 100px;
+    width: 100%;
+}
+
 /* media queries */
 @media only screen and (max-width: 426px) {
     .profile-picture {
