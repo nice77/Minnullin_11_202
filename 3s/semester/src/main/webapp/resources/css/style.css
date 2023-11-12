@@ -22,6 +22,8 @@
     --color-white: #fff;
     --color-green: #4bb34b;
     --border-radius: 8px;
+    --profile-image-size-large: 150px;
+    --profile-image-size-small: 75px;
 }
 
 h1, h2, h3, h4, h5, h6, label {
@@ -39,6 +41,7 @@ input, a {
     border-radius: var(--border-radius);
     width: 100%;
     font-size: 12pt;
+    -webkit-tap-highlight-color: transparent;
 }
 
 input::-webkit-file-upload-button {

@@ -2,11 +2,29 @@ header {
     background-color: var(--color-background-tertiary);
     display: flex;
     border-bottom: solid 1px var(--color-background-secondary);
+    align-items: center;
 }
 
-header:nth-child(1) {
+header:nth-child(2) {
     padding: 0 16px;
     cursor: default;
+}
+
+#expand_button {
+    display: none;
+    margin: 0 8px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 4px;
+    width: 25px;
+    height: 20px;
+}
+
+#expand_button span {
+    width: 75%;
+    height: 1px;
+    background: var(--color-white);
 }
 
 body {
@@ -65,13 +83,13 @@ body {
 }
 
 .profile-picture {
-    width: 150px;
-    height: 150px;
+    width: var(--profile-image-size-large);
+    height: var(--profile-image-size-large);
     margin: 8px;
     mask-image: url("../assets/masks/1.png");
     -webkit-mask-image: url("../assets/masks/1.png");
-    mask-size: 150px 150px;
-    -webkit-mask-size: 150px 150px;
+    mask-size: var(--profile-image-size-large) var(--profile-image-size-large);
+    -webkit-mask-size: var(--profile-image-size-large) var(--profile-image-size-large);
 }
 
 .content-container, #all-vacancies, #subbed-vacancies {
@@ -204,4 +222,42 @@ body {
     padding: 4px;
     border-radius: var(--border-radius);
     background-color: var(--color-background-secondary);
+}
+
+/* media queries */
+@media only screen and (max-width: 426px) {
+    .profile-picture {
+        width: var(--profile-image-size-small);
+        height: var(--profile-image-size-small);
+        margin: 8px;
+        mask-image: url("../assets/masks/1.png");
+        -webkit-mask-image: url("../assets/masks/1.png");
+        mask-size: var(--profile-image-size-small) var(--profile-image-size-small);
+        -webkit-mask-size: var(--profile-image-size-small) var(--profile-image-size-small);
+    }
+
+    .main-page {
+        flex-direction: column;
+    }
+
+    .main-page__element {
+        align-self: center;
+    }
+
+    .main-page__menu {
+        position: absolute;
+        width: 100vw;
+        top: -100px;
+        transition: all, 0.5s;
+        z-index: 999;
+    }
+
+    .main-page__element {
+        width: 90vw;
+        max-width: 90vw;
+    }
+
+    #expand_button {
+        display: flex;
+    }
 }
