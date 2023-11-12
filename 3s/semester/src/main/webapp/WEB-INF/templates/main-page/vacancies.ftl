@@ -20,6 +20,11 @@
 </head>
 <body>
 <header>
+    <div id="expand_button">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
     <h2>FindCure</h2>
 </header>
 <div class="main-page">

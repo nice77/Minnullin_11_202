@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./resources/css/style-main-page.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" defer></script>
     <script src="./resources/js/script-main.js" defer></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" defer></script>
     <script src="./resources/js/main-page/script-settings.js" defer></script>
@@ -19,6 +20,11 @@
 </head>
 <body>
 <header>
+    <div id="expand_button">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
     <h2>FindCure</h2>
 </header>
 <div class="main-page">
@@ -40,10 +46,3 @@
 </div>
 </body>
 </html>
-
-
-
-
-<#--<#macro settingsMain>-->
-<#--    -->
-<#--</#macro>-->
