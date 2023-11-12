@@ -7,6 +7,7 @@ import freemarker.template.TemplateException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,11 +43,13 @@ public class AuthorisationServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         boolean userEntry = req.getParameter("company") == null;
-        System.out.println("User enters: " + userEntry);
+        boolean rememberMe = req.getParameter("remember-me") != null;
+
         if (userEntry) {
             if (Service.checkUserCredentials(email, password)) {
                 req.getSession().setAttribute("userType", "user");
                 req.getSession().setAttribute("user", email);
+                setCookie(req, resp, rememberMe, password);
                 resp.sendRedirect("./profile");
             }
         }
@@ -54,10 +57,24 @@ public class AuthorisationServlet extends HttpServlet {
             System.out.println("Got right company credentials");
             req.getSession().setAttribute("userType", "company");
             req.getSession().setAttribute("user", email);
+            setCookie(req, resp, rememberMe, password);
             resp.sendRedirect("./company");
         }
         else {
             resp.sendRedirect("./auth");
+        }
+    }
+
+    private void setCookie(HttpServletRequest req, HttpServletResponse resp, boolean rememberMe, String password) {
+        if (rememberMe) {
+            Cookie cookie = new Cookie("rememberId", req.getSession().getAttribute("user") + "!" + password + "!" + req.getSession().getAttribute("userType"));
+            cookie.setMaxAge(60 * 60 * 24 * 365); // time - needs to be thrown to resources!
+            resp.addCookie(cookie);
+        }
+        else {
+            Cookie cookie = new Cookie("rememberId", "");
+            cookie.setMaxAge(0); // time - needs to be thrown to resources!
+            resp.addCookie(cookie);
         }
     }
 }

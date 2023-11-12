@@ -41,9 +41,11 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Boolean checkbox = req.getParameter("company") == null;
+        System.out.println("In doPost; " + req.getParameterMap());
+        boolean checkbox = req.getParameter("company") == null;
         if (checkbox) {
             UserDAO userDAO = new UserDAO();
+            System.out.println("Name field: " + req.getParameter("name"));
             User user = new User(-1, req.getParameter("name"), "",
                     "", req.getParameter("phone"),
                     req.getParameter("email"), req.getParameter("password"), "", "default.png");
