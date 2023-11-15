@@ -31,6 +31,19 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
+    public List<User> getSpecific(String filter) {
+        try (Statement s = this.database.getConnection().createStatement()) {
+            ResultSet rs = s.executeQuery("select * from users where " + filter);
+            LinkedList<User> users = new LinkedList<>();
+            while (rs.next()) {
+                users.add((User) transfer(rs));
+            }
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public User get(int id) {
         try (PreparedStatement s = this.database.getConnection().prepareStatement("select * from users where id = ?")) {

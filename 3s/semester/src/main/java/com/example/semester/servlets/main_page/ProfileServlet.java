@@ -1,5 +1,6 @@
 package com.example.semester.servlets.main_page;
 
+import com.example.semester.DAO.FollowDAO;
 import com.example.semester.DAO.PostDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.User;
@@ -40,10 +41,16 @@ public class ProfileServlet extends HttpServlet {
         }
         else {
             user = (new UserDAO()).get(Integer.parseInt(req.getParameter("userId")));
-            if (user.getId() == userDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId()) {
+            if (req.getSession().getAttribute("userType").equals("user")
+                    && user.getId() == userDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId()) {
                 root.put("currentUser", true);
             }
             else {
+                int otherUserId = Integer.parseInt(req.getParameter("userId"));
+                int currentUserId = (new UserDAO()).getByEmail(req.getSession().getAttribute("user").toString()).getId();
+                boolean isSubscribed = (new FollowDAO()).isSubscribed(currentUserId, otherUserId);
+                System.out.println("isSubscribed: " + isSubscribed + "\ncurrentUser: " + currentUserId + "\notherUser: " + otherUserId);
+                root.put("isSubscribed", isSubscribed);
                 root.put("currentUser", false);
             }
         }

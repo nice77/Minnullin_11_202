@@ -13,7 +13,6 @@
     <script src="./resources/js/script-main.js" defer></script>
     <script src="./resources/js/main-page/script-profile-user.js" defer></script>
     <script src="./resources/js/main-page/script-profile-company.js" defer></script>
-    <script src="./resources/js/main-page/script-company.js" defer></script>
     <title>Profile</title>
 </head>
 <body>
@@ -46,16 +45,25 @@
             </#if>
 
         </div>
-        <#if currentUser>
-            <div class="content-container">
+        <div class="content-container">
+            <#if currentUser>
                 <#if userType == "user">
                     <#assign fieldName="Новая запись дневника">
                 <#else>
                     <#assign fieldName="Анонс нового испытания">
                 </#if>
                 <input type="button" class="menu__button profile-button" value="${fieldName}" id="createNewBtn">
-            </div>
-        </#if>
+            <#else>
+                <#if userType == "user">
+                    <#if isSubscribed>
+                        <#assign fieldName="Отписаться">
+                    <#else>
+                        <#assign fieldName="Подписаться">
+                    </#if>
+                    <input type="button" class="menu__button profile-button" value="${fieldName}" id="subscribeBtn" data-user-id="${user.getId()}" data-is-subscribed="${isSubscribed?c}">
+                </#if>
+            </#if>
+        </div>
 
         <#if userType == "user">
             <#include "./profile-list-types/diary-list-type.ftl">
@@ -69,12 +77,3 @@
 </div>
 </body>
 </html>
-
-
-
-
-
-
-<#--<#macro profile>-->
-<#--    -->
-<#--</#macro>-->

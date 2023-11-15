@@ -1,8 +1,11 @@
 package com.example.semester.utils;
 
 import com.example.semester.DAO.CompanyDAO;
+import com.example.semester.DAO.FollowDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.database.DB;
+import com.example.semester.models.Follow;
+import com.example.semester.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -176,5 +179,44 @@ public class Service {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<User> getCurrentUserFollowers(String userEmail, Integer offset) {
+        UserDAO userDAO = new UserDAO();
+        int currentUserId = userDAO.getByEmail(userEmail).getId();
+        List<Integer> followersId = (new FollowDAO()).getAll()
+                .stream()
+                .filter(f -> f.getAuthor() == currentUserId)
+                .map(Follow::getFollower)
+                .collect(Collectors.toList());
+
+        List<User> followers = userDAO.getAll()
+                .stream()
+                .filter(u -> followersId.contains(u.getId()))
+                .collect(Collectors.toList());
+
+        if (offset != null && (offset + 10) < followers.size()) {
+            followers = followers.subList(offset, offset + 10);
+        }
+        return followers;
+    }
+
+    public static List<User> getCurrentUserAuthors(String userEmail, Integer offset) {
+        UserDAO userDAO = new UserDAO();
+        int currentUserId = userDAO.getByEmail(userEmail).getId();
+
+        List<Integer> authorsId = (new FollowDAO()).getAll()
+                .stream()
+                .filter(f -> f.getFollower() == currentUserId)
+                .map(Follow::getAuthor)
+                .collect(Collectors.toList());
+        List<User> authors = userDAO.getAll()
+                .stream()
+                .filter(u -> authorsId.contains(u.getId()))
+                .collect(Collectors.toList());
+        if (offset != null && (offset + 10) < authors.size()) {
+            authors = authors.subList(offset, offset + 10);
+        }
+        return authors;
     }
 }
