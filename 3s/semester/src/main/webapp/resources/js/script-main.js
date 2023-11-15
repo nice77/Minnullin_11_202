@@ -28,19 +28,6 @@ const fade = (path) => {
     timeline.to(backMenu).to(fadeAnim)
 }
 
-document.getElementById('profile').onclick = (event) => {
-    fade("./profile")
-}
-
-document.getElementById('vacancies').onclick = (event) => {
-    fade("./vacancies")
-}
-
-document.getElementById('settings').onclick = (event) => {
-    fade("./settings")
-}
-
-
 const toX = () => {
     const timeline = gsap.timeline()
     const uno = gsap.to("#expand_button span:nth-child(1)", {
@@ -69,7 +56,7 @@ const toBurger = () => {
     const tres = gsap.to("#expand_button span:nth-child(3)", {
         transform: "inherit"
     })
-    $(".main-page__menu").css({"top": "-100px"})
+    $(".main-page__menu").css({"top": "-150px"})
     timeline.to(uno).to(dos).to(tres)
 }
 
@@ -78,5 +65,21 @@ $(document).ready(() => {
     $("#expand_button").on("click", () => {
         opened = !opened
         opened ? toX() : toBurger()
+    })
+
+    $('#profile').on("click", (event) => {
+        fade("./profile")
+    })
+
+    $('#vacancies').on("click", (event) => {
+        fade("./vacancies")
+    })
+
+    $('#settings').on("click", (event) => {
+        fade("./settings")
+    })
+
+    $('#follows').on("click", (event) => {
+        fade("./follows")
     })
 })

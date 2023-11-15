@@ -42,7 +42,8 @@ public class CompanyServlet extends HttpServlet {
         }
         else {
             company = companyDAO.get(Integer.parseInt(req.getParameter("companyId")));
-            if (company.getId() == companyDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId()) {
+            if (req.getSession().getAttribute("userType").equals("company")
+                    && company.getId() == companyDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId()) {
                 root.put("currentUser", true);
             }
             else {
