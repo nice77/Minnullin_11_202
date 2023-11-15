@@ -32,10 +32,10 @@
     <@buttons/>
     <div class="main-page__element">
         <#if currentCardObj??>
-            <#if userType == "company">
+            <#if userViewType == "company">
                 <#include "page-types-and-cards/current-vacancy.ftl">
                 <@currentVacancy/>
-            <#elseif userType == "user">
+            <#elseif userViewType == "user">
                 <#include "page-types-and-cards/current-post.ftl">
                 <@currentPost/>
             </#if>
@@ -47,7 +47,3 @@
 </div>
 </body>
 </html>
-
-<#macro vacancies>
-
-</#macro>

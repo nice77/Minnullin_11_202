@@ -10,5 +10,8 @@
             Дата: ${vacancyObj.getMeetingDate()}<br>
             Компания: <a class="link" href="./company?companyId=${currentCardObj[1].getId()}">${currentCardObj[1].getName()}</a>
         </h4>
+        <#if currentCompanysVacancy>
+            <input type="button" value="Удалить заявку" id="removeVacancyBtn" data-vacancy-id="${vacancyObj.getId()}">
+        </#if>
     </div>
 </#macro>

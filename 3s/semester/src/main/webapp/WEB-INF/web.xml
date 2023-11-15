@@ -36,12 +36,11 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>vacanciesFollowsFilter</filter-name>
-        <filter-class>com.example.semester.filters.VacanciesFollowsFilter</filter-class>
+        <filter-name>followsFilter</filter-name>
+        <filter-class>com.example.semester.filters.FollowsFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>vacanciesFollowsFilter</filter-name>
-        <url-pattern>/vacancies</url-pattern>
+        <filter-name>followsFilter</filter-name>
         <url-pattern>/follows</url-pattern>
     </filter-mapping>
     <request-character-encoding>UTF-8</request-character-encoding>
