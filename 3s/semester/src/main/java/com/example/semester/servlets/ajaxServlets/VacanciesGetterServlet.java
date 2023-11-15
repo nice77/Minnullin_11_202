@@ -3,6 +3,7 @@ package com.example.semester.servlets.ajaxServlets;
 import com.example.semester.DAO.SubDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.DAO.VacancyDAO;
+import com.example.semester.models.Vacancy;
 import com.example.semester.utils.Service;
 import com.google.gson.Gson;
 
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(value="/vacanciesGetter")
+@WebServlet(value="/vacanciesConnection")
 public class VacanciesGetterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,5 +32,14 @@ public class VacanciesGetterServlet extends HttpServlet {
             resp.setCharacterEncoding("utf-8");
             resp.getWriter().write(output);
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int vacancyId = Integer.parseInt(req.getParameter("vacancyId"));
+        VacancyDAO vacancyDAO = new VacancyDAO();
+        Vacancy toDelete = new Vacancy();
+        toDelete.setId(vacancyId);
+        vacancyDAO.delete(toDelete);
     }
 }

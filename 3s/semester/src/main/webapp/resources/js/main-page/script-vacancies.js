@@ -4,11 +4,11 @@ gsap.utils.toArray(".card").forEach(item => {
         element.onclick = (event) => {
             fade("./vacancies?vid=" + element.id)
         }
-        item.children[1].onclick = (event) => {
+        $("#btn").on("click", (event) => {
             removeAjax({
-                id: event.target.id.substring(4)
+                id: $("#btn").attr("data-id")
             })
-        }
+        })
     }
 })
 
@@ -29,47 +29,52 @@ const removeAll = () => {
 
 const fetch = () => {
     $.ajax({
-        url: "./vacanciesGetter",
+        url: "./vacanciesConnection",
         method: "GET",
         data: {
             getAll: true
         },
         success: (result) => {
             const vacancies = JSON.parse(result)
-
             vacancies.forEach((vacancy) => {
-                $('<div>', {
-                    class: 'card',
-                    id: 'card-' + vacancy.id
-                }).append(
-                    $('<div>', {
-                        class: 'clickable',
-                        id: vacancy.id
-                        // поправить параметры ссылки
-                    }).click(() => fade("./vacancies?vid=" + vacancy.id)).append(
-                        $('<h3>', {
-                            text: vacancy['header']
-                        })
-                    ).append(
-                        $('<h4>', {
-                            text: vacancy['body']
-                        })
-                    )
-                ).append(
-                    $('<input>', {
-                        type: 'button',
-                        value: 'Подписаться',
-                        id: 'btn-' + vacancy.id
-                    }).click(() => {
-                        inputAjax(vacancy)
-                    })
-                ).appendTo("#all-vacancies")
+                drawVacancies(vacancy)
             })
-        },
-        error: () => {
-            console.log(24)
         }
     })
+}
+
+const drawVacancies = (vacancy) => {
+    const userType = $("#vacancies-list").attr("data-userType")
+    const toAdd = $('<div>', {
+        class: 'card',
+        id: 'card-' + vacancy.id
+    }).append(
+        $('<div>', {
+            class: 'clickable',
+            id: vacancy.id
+            // поправить параметры ссылки
+        }).click(() => fade("./vacancies?vid=" + vacancy.id)).append(
+            $('<h3>', {
+                text: vacancy['header']
+            })
+        ).append(
+            $('<h4>', {
+                text: vacancy['body']
+            })
+        )
+    )
+    if (userType !== "company") {
+        toAdd.append(
+            $('<input>', {
+                type: 'button',
+                value: 'Подписаться',
+                id: 'btn-' + vacancy.id
+            }).click(() => {
+                inputAjax(vacancy)
+            })
+        )
+    }
+    toAdd.appendTo("#all-vacancies")
 }
 
 const inputAjax = (vacancy) => {
@@ -124,12 +129,8 @@ const removeAjax = (vacancy) => {
             $('#subbed-vacancies > #card-' + vacancy.id).remove()
             $('#all-vacancies > *').remove()
             if (checkbox.checked) {
-                console.log("must get")
                 fetch()
             }
-        },
-        error: () => {
-            console.log("lol")
         }
     })
 }

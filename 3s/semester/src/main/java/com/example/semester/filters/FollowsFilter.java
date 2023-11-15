@@ -7,13 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class VacanciesFollowsFilter extends HttpFilter {
+public class FollowsFilter extends HttpFilter {
     @Override
     public void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        String currPost = req.getParameter("vid");
-        String currVacancy = req.getParameter("pid");
-        if (req.getSession().getAttribute("userType").equals("company")
-                && currPost == null && currVacancy == null) {
+        if (req.getSession().getAttribute("userType").equals("company")) {
             res.sendRedirect("./profile");
         }
         chain.doFilter(req, res);

@@ -44,42 +44,29 @@ public class VacanciesServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         Map<String, Object> root = new HashMap<>();
-        root.put("path", "/vacancies");
-
-//        if (req.getParameter("cid") != null) {
-//            if (req.getSession().getAttribute("userType").equals("company")) {
-//                VacancyDAO vacancyDAO = new VacancyDAO();
-//                Vacancy currentVacancy = vacancyDAO.get(Integer.parseInt(req.getParameter("cid")));
-//                Company vacancyCompany = (new CompanyDAO()).get(currentVacancy.getCompanyId());
-//                root.put("currentCardObj", new Object[] {currentVacancy, vacancyCompany});
-//                System.out.println("in company usertype branch");
-//                root.put("userType", "company");
-//            }
-//            else if (req.getSession().getAttribute("userType").equals("user")) {
-//                PostDAO postDAO = new PostDAO();
-//                Post currentPost = postDAO.get(Integer.parseInt(req.getParameter("cid")));
-//                User postUser = (new UserDAO()).get(currentPost.getUserId());
-//                root.put("currentCardObj", new Object[] {currentPost, postUser});
-//                System.out.println("in user usertype branch");
-//                root.put("userType", "user");
-//            }
-//        }
 
         if (req.getParameter("vid") != null) {
             VacancyDAO vacancyDAO = new VacancyDAO();
             Vacancy currentVacancy = vacancyDAO.get(Integer.parseInt(req.getParameter("vid")));
             Company vacancyCompany = (new CompanyDAO()).get(currentVacancy.getCompanyId());
             root.put("currentCardObj", new Object[] {currentVacancy, vacancyCompany});
-            System.out.println("in company usertype branch");
-            root.put("userType", "company");
+
+            if (req.getSession().getAttribute("userType").equals("user")) {
+                root.put("currentCompanysVacancy", false);
+            }
+            else {
+                root.put("currentCompanysVacancy",
+                        (new CompanyDAO()).getByEmail(req.getSession().getAttribute("user").toString()).getId() == vacancyCompany.getId());
+            }
+
+            root.put("userViewType", "company");
         }
         else if (req.getParameter("pid") != null) {
             PostDAO postDAO = new PostDAO();
             Post currentPost = postDAO.get(Integer.parseInt(req.getParameter("pid")));
             User postUser = (new UserDAO()).get(currentPost.getUserId());
             root.put("currentCardObj", new Object[] {currentPost, postUser});
-            System.out.println("in user usertype branch");
-            root.put("userType", "user");
+            root.put("userViewType", "user");
         }
 
         else {
@@ -90,7 +77,7 @@ public class VacanciesServlet extends HttpServlet {
             List<Map<String, String>> data = Service.executeQuery(query);
             root.put("vacanciesMapList", data);
         }
-
+        root.put("userType", req.getSession().getAttribute("userType"));
         Template tmpl = FreemarkerConfig.getConfig().getTemplate("./main-page/vacancies.ftl");
         try {
             tmpl.process(root, resp.getWriter());

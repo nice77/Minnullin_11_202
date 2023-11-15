@@ -1,14 +1,16 @@
 $(document).ready(() => {
-    let options = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 1.0,
-    };
-    let callback = function (entries, observer) {
-        setTimeout(() => fetchCommentaries(), 500)
-    };
-    let observer = new IntersectionObserver(callback, options)
-    observer.observe(document.querySelector("#bottom-crosser"))
+    if ($("#bottom-crosser").get(0) !== undefined) {
+        let options = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 1.0,
+        };
+        let callback = function (entries, observer) {
+            setTimeout(() => fetchCommentaries(), 500)
+        };
+        let observer = new IntersectionObserver(callback, options)
+        observer.observe($("#bottom-crosser").get(0))
+    }
 
     const drawComments = (commentsList, toTop=false) => {
         let i = 0
@@ -71,6 +73,19 @@ $(document).ready(() => {
         })
     }
 
+    const removeVacancy = (vacancyId) => {
+        $.ajax({
+            url: "./vacanciesConnection",
+            method: "POST",
+            data: {
+                vacancyId: vacancyId
+            },
+            success: () => {
+                window.location.href = "./vacancies"
+            }
+        })
+    }
+
     let edited = false
     $("#bodyInput").on("input", (event) => {
         if (!edited) {
@@ -100,10 +115,15 @@ $(document).ready(() => {
         bodyInputField.value = $("#bodyInput").innerText
     })
 
-    // commentariesButton.on("click", () => fetchCommentaries())
     $("#postCommentary").on("click", (event) => {
         postCommentary($("#bodyInput").get(0).innerText)
         $("#bodyInput").get(0).innerText = "Комментарий"
         edited = false
+    })
+
+
+    const removeVacancyBtn = $("#removeVacancyBtn")
+    removeVacancyBtn.on("click", (event) => {
+        removeVacancy(removeVacancyBtn.attr("data-vacancy-id"))
     })
 })
