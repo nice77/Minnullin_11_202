@@ -99,6 +99,10 @@ body {
     width: 100%;
 }
 
+#subscribeBtn {
+    background-color: var(--color-green);
+}
+
 .profile-button {
     margin: 8px 0;
     height: auto;
@@ -229,6 +233,41 @@ body {
     width: 100%;
 }
 
+.subs-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.button-group {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.button-group > input {
+    display: none;
+}
+
+#followers + label {
+    margin: 8px;
+    border: none;
+}
+
+#followers:checked + label {
+    border-bottom: solid 2px var(--color-green);
+}
+
+#authors + label {
+    margin: 8px;
+    border: none;
+}
+
+#authors:checked + label {
+    border-bottom: solid 2px var(--color-green);
+}
+
 /* media queries */
 @media only screen and (max-width: 426px) {
     .profile-picture {
@@ -252,7 +291,7 @@ body {
     .main-page__menu {
         position: absolute;
         width: 100vw;
-        top: -100px;
+        top: -150px;
         transition: all, 0.5s;
         z-index: 999;
     }

@@ -31,7 +31,7 @@ h1, h2, h3, h4, h5, h6, label {
     padding: 8px;
 }
 
-input, a {
+input, a, li {
     background-color: var(--color-background-tertiary);
     padding: 12px 8px;
     color: var(--color-white);
@@ -42,6 +42,32 @@ input, a {
     width: 100%;
     font-size: 12pt;
     -webkit-tap-highlight-color: transparent;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-height: 100px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+ul::-webkit-scrollbar {
+    margin: 0 0 0 2px;
+    width: 4px;
+    background-color: var(--color-background-secondary);
+}
+
+ul::-webkit-scrollbar-thumb {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+}
+
+li {
+    list-style-type: none;
+    text-align: center;
 }
 
 input::-webkit-file-upload-button {
