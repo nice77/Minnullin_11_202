@@ -71,15 +71,7 @@ public class Service {
         return className;
     }
 
-    public static boolean checkUserCredentials(String email, String password) {
-        return (new UserDAO()).getAll().stream().anyMatch(u -> u.getEmail().equals(email) && u.getHashedPassword().equals(password));
-    }
-
-    public static boolean checkCompanyCredentials(String email, String password) {
-        return (new CompanyDAO()).getAll().stream().anyMatch(c -> c.getEmail().equals(email) && c.getHashedPassword().equals(password));
-    }
-
-    // Method to write into file a new profile picture
+    // Method to write into file a new profile picture (and also images)
     public static void writeToFile(InputStream is, String path, String name) {
         try {
             OutputStream os = new FileOutputStream(path + name);
