@@ -4,6 +4,7 @@
         <input type="button" class="menu__button" value="Записи" id="vacancies">
         <#if userType == "user">
             <input type="button" class="menu__button" value="Подписки" id="follows">
+            <input type="button" class="menu__button" value="Новости" id="news">
         </#if>
         <input type="button" class="menu__button" value="Настройки" id="settings">
     </div>
