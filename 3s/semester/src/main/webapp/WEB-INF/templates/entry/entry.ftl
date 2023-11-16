@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./resources/css/style-entry.css">
     <link rel="icon" href="./resources/assets/svg/leaf.svg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" defer></script>
     <script src="./resources/js/entry/script.js" defer></script>
 </head>
 <body>
