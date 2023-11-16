@@ -2,6 +2,7 @@ package com.example.semester.filters;
 
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.User;
+import com.example.semester.utils.PasswordProcessor;
 import com.example.semester.utils.Service;
 
 import javax.servlet.FilterChain;
@@ -35,8 +36,8 @@ public class MainFilter extends HttpFilter {
                 String password = cookie.getValue().split("!")[1];
                 String userType = cookie.getValue().split("!")[2];
                 System.out.println("UserType: " + userType);
-                if (userType.equals("company") && !Service.checkCompanyCredentials(email, password) ||
-                        userType.equals("user") && !Service.checkUserCredentials(email, password)) {
+                if (userType.equals("company") && !PasswordProcessor.checkCompanyCredentials(email, password) ||
+                        userType.equals("user") && !PasswordProcessor.checkUserCredentials(email, password)) {
                     Cookie c = new Cookie("rememberId", null);
                     c.setMaxAge(0);
                     res.addCookie(c);
