@@ -1,5 +1,11 @@
 $(document).ready(() => {
     const subscribeBtn = $("#subscribeBtn")
+    const createNewBtn = $("#createNewBtn")
+
+    createNewBtn.on("click", (event) => {
+        window.location.href = "./create"
+    })
+
     subscribeBtn.on("click", (event) => {
         $.ajax({
             url: "./followsConnection",
@@ -11,7 +17,6 @@ $(document).ready(() => {
             success: (result) => {
                 let isSubscribed = JSON.parse(subscribeBtn.attr("data-is-subscribed"))
                 if (isSubscribed) {
-                    console.log(42)
                     subscribeBtn.val("Подписаться")
                 }
                 else {
@@ -19,7 +24,6 @@ $(document).ready(() => {
                 }
 
                 subscribeBtn.attr("data-is-subscribed", !isSubscribed)
-                console.log(subscribeBtn.data("data-is-subscribed"))
             }
         })
     })
