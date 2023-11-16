@@ -82,4 +82,8 @@ $(document).ready(() => {
     $('#follows').on("click", (event) => {
         fade("./follows")
     })
+
+    $('#news').on("click", (event) => {
+        fade("./news")
+    })
 })
