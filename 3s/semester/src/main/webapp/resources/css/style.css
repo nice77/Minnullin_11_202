@@ -21,9 +21,13 @@
     --color-background-tertiary: #222;
     --color-white: #fff;
     --color-green: #4bb34b;
+    --color-dark-green: #1d3b1d;
+    --color-red: #ff0a35;
     --border-radius: 8px;
     --profile-image-size-large: 150px;
     --profile-image-size-small: 75px;
+    --icon-size-large: 20px;
+    --icon-size-small: 10px;
 }
 
 h1, h2, h3, h4, h5, h6, label {

@@ -22,6 +22,11 @@ input::-webkit-inner-spin-button {
     color: var(--color-white);
 }
 
+.register:disabled {
+    background-color: var(--color-dark-green);
+    cursor: default;
+}
+
 form {
     display: flex;
     flex-direction: column;

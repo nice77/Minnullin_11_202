@@ -145,6 +145,11 @@ body {
     border-radius: var(--border-radius);
 }
 
+#removeVacancyBtn, #removePostBtn {
+    background-color: var(--color-red);
+    cursor: pointer;
+}
+
 .card > input {
     align-self: center;
 }
@@ -203,6 +208,7 @@ body {
     outline: none;
     border-radius: var(--border-radius);
     padding: 8px;
+    margin: 8px;
     color: var(--color-white);
     overflow: hidden;
     resize: both;
