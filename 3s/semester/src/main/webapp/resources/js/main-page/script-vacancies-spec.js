@@ -86,6 +86,19 @@ $(document).ready(() => {
         })
     }
 
+    const removePost = (postId) => {
+        $.ajax({
+            url: "./postsConnection",
+            method: "POST",
+            data: {
+                postId: postId
+            },
+            success: () => {
+                window.location.href = "./profile"
+            }
+        })
+    }
+
     let edited = false
     $("#bodyInput").on("input", (event) => {
         if (!edited) {
@@ -121,6 +134,14 @@ $(document).ready(() => {
         edited = false
     })
 
+    $("#editPost").on("click", (event) => {
+        window.location.href = "./create?postId=" + $("#editPost").attr("data-post-id")
+    })
+
+    const removePostBtn = $("#removePostBtn")
+    removePostBtn.on("click", (event) => {
+        removePost(removePostBtn.attr("data-post-id"))
+    })
 
     const removeVacancyBtn = $("#removeVacancyBtn")
     removeVacancyBtn.on("click", (event) => {
