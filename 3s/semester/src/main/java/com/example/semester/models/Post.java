@@ -9,21 +9,32 @@ public class Post {
     private String header;
     private String body;
     private Date creatingDate;
+    private Date modifyDate;
 
     public Post(Integer id,
                 Integer userId,
                 String header,
                 String body,
-                Date creatingDate) {
+                Date creatingDate,
+                Date modifyDate) {
         this.id = id;
         this.userId = userId;
         this.header = header;
         this.body = body;
         this.creatingDate = creatingDate;
+        this.modifyDate = modifyDate;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 
     public Post() {
-        new Post(-1, -1, null, null, null);
+        new Post(-1, -1, null, null, null, null);
     }
 
     public Integer getId() {
