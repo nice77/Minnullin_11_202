@@ -1,6 +1,7 @@
 package com.example.semester.servlets.entry;
 
 import com.example.semester.config.FreemarkerConfig;
+import com.example.semester.utils.PasswordProcessor;
 import com.example.semester.utils.Service;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -46,14 +47,14 @@ public class AuthorisationServlet extends HttpServlet {
         boolean rememberMe = req.getParameter("remember-me") != null;
 
         if (userEntry) {
-            if (Service.checkUserCredentials(email, password)) {
+            if (PasswordProcessor.checkUserCredentials(email, password)) {
                 req.getSession().setAttribute("userType", "user");
                 req.getSession().setAttribute("user", email);
                 setCookie(req, resp, rememberMe, password);
                 resp.sendRedirect("./profile");
             }
         }
-        else if (Service.checkCompanyCredentials(email, password)) {
+        else if (PasswordProcessor.checkCompanyCredentials(email, password)) {
             System.out.println("Got right company credentials");
             req.getSession().setAttribute("userType", "company");
             req.getSession().setAttribute("user", email);

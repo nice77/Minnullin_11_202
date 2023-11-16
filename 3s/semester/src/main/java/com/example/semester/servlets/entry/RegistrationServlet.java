@@ -5,6 +5,7 @@ import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.Company;
 import com.example.semester.models.User;
 import com.example.semester.config.FreemarkerConfig;
+import com.example.semester.utils.PasswordProcessor;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -46,9 +47,15 @@ public class RegistrationServlet extends HttpServlet {
         if (checkbox) {
             UserDAO userDAO = new UserDAO();
             System.out.println("Name field: " + req.getParameter("name"));
-            User user = new User(-1, req.getParameter("name"), "",
-                    "", req.getParameter("phone"),
-                    req.getParameter("email"), req.getParameter("password"), "", "default.png");
+            User user = new User(-1,
+                    req.getParameter("name"),
+                    "",
+                    "",
+                    req.getParameter("phone"),
+                    req.getParameter("email"),
+                    PasswordProcessor.getHashedPassword(req.getParameter("password")),
+                    "",
+                    "default.png");
             userDAO.add(user);
         }
         else {
