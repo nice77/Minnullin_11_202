@@ -14,9 +14,26 @@
     <title>Create post</title>
 </head>
 <body>
+<header>
+    <div id="expand_button">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <h2>FindCure</h2>
+</header>
 <div class="main-page">
-    <form class="main-page__element main-page__settings-form" method="post" enctype="multipart/form-data">
-        <h2>Добавить запись</h2>
+    <#if modified>
+        <#assign action="./create?postId=" + post.getId()>
+    <#else>
+        <#assign action="./create">
+    </#if>
+    <form action="" class="main-page__element main-page__settings-form" method="post" enctype="multipart/form-data">
+        <#if modified>
+            <h2>Изменить запись</h2>
+        <#else>
+            <h2>Добавить запись</h2>
+        </#if>
         <#if userType == "user">
             <#include "user-post-form.ftl">
             <@userPostForm/>

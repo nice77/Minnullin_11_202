@@ -43,8 +43,18 @@ public class CreateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
-        Map<String, String> root = new HashMap<>();
+        Map<String, Object> root = new HashMap<>();
         root.put("userType", req.getSession().getAttribute("userType").toString());
+        if (req.getParameter("postId") != null) {
+            int postId = Integer.parseInt(req.getParameter("postId"));
+            Post post = (new PostDAO()).get(postId);
+            root.put("post", post);
+            root.put("modified", true);
+        }
+        else {
+            root.put("modified", false);
+        }
+
         Template tmpl = FreemarkerConfig.getConfig().getTemplate("./createPost/create.ftl");
         try {
             tmpl.process(root, resp.getWriter());
@@ -79,6 +89,7 @@ public class CreateServlet extends HttpServlet {
                 vacancyDAO.add(vacancy);
             }
             else if (req.getSession().getAttribute("userType").equals("user")) {
+                String postId = req.getParameter("postId");
                 Post post = new Post();
                 PostDAO postDAO = new PostDAO();
                 post.setUserId((new UserDAO()).getByEmail(req.getSession().getAttribute("user").toString()).getId());
@@ -91,7 +102,13 @@ public class CreateServlet extends HttpServlet {
                     Method m = Post.class.getDeclaredMethod("set" + Service.capitalize(s), String.class);
                     m.invoke(post, resField);
                 }
-                postDAO.add(post);
+                if (postId != null) {
+                    post.setId(Integer.parseInt(postId));
+                    postDAO.update(post);
+                }
+                else {
+                    postDAO.add(post);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
