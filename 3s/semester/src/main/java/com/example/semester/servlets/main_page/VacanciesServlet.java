@@ -63,10 +63,14 @@ public class VacanciesServlet extends HttpServlet {
         }
         else if (req.getParameter("pid") != null) {
             PostDAO postDAO = new PostDAO();
+            UserDAO userDAO = new UserDAO();
             Post currentPost = postDAO.get(Integer.parseInt(req.getParameter("pid")));
-            User postUser = (new UserDAO()).get(currentPost.getUserId());
+            User postUser = userDAO.get(currentPost.getUserId());
+
+            int currentUserId = userDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId();
             root.put("currentCardObj", new Object[] {currentPost, postUser});
             root.put("userViewType", "user");
+            root.put("currentUserId", currentUserId);
         }
 
         else {

@@ -1,8 +1,11 @@
 package com.example.semester.servlets.ajaxServlets;
 
+import com.example.semester.DAO.CommentDAO;
 import com.example.semester.DAO.SubDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.DAO.VacancyDAO;
+import com.example.semester.models.Comment;
+import com.example.semester.models.Sub;
 import com.example.semester.models.Vacancy;
 import com.example.semester.utils.Service;
 import com.google.gson.Gson;
@@ -13,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(value="/vacanciesConnection")
 public class VacanciesGetterServlet extends HttpServlet {
@@ -40,6 +45,17 @@ public class VacanciesGetterServlet extends HttpServlet {
         VacancyDAO vacancyDAO = new VacancyDAO();
         Vacancy toDelete = new Vacancy();
         toDelete.setId(vacancyId);
+
+        SubDAO subDAO = new SubDAO();
+        List<Sub> subs = subDAO
+                .getAll()
+                .stream()
+                .filter(s -> s.getVacancyId() == toDelete.getId())
+                .collect(Collectors.toList());
+        for (Sub sub : subs) {
+            subDAO.delete(sub);
+        }
+
         vacancyDAO.delete(toDelete);
     }
 }
