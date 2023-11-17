@@ -27,7 +27,8 @@
 </header>
 <dialog id="hidden">
     <div class="dialog-content">
-        <#if user.getAbout()?length == 0>
+        <#assign userAbout = user.getAbout()!"">
+        <#if userAbout?length == 0>
             <h5>Ничего нет!</h5>
         <#else>
             <h5>${user.getAbout()}</h5>
