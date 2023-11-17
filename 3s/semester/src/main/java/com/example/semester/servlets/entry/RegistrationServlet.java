@@ -60,9 +60,13 @@ public class RegistrationServlet extends HttpServlet {
         }
         else {
             CompanyDAO companyDAO = new CompanyDAO();
-            Company company = new Company(-1, req.getParameter("name"),
-                    req.getParameter("phone"), req.getParameter("email"),
-                    req.getParameter("password"), null, "default.png");
+            Company company = new Company(-1,
+                    req.getParameter("name"),
+                    req.getParameter("phone"),
+                    req.getParameter("email"),
+                    PasswordProcessor.getHashedPassword(req.getParameter("password")),
+                    null,
+                    "default.png");
             System.out.println(company.getName() + ", " + company.getPhoneNumber() + ", " + company.getEmail() + ", "
                     + company.getHashedPassword() + ", " + company.getAbout());
             companyDAO.add(company);

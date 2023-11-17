@@ -1,6 +1,7 @@
 package com.example.semester.servlets.entry;
 
 import com.example.semester.config.FreemarkerConfig;
+import com.example.semester.utils.CookieService;
 import com.example.semester.utils.PasswordProcessor;
 import com.example.semester.utils.Service;
 import freemarker.template.Template;
@@ -14,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.example.semester.utils.CookieService.setCookie;
 
 
 @WebServlet(value="/auth")
@@ -42,7 +46,7 @@ public class AuthorisationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String password = PasswordProcessor.getHashedPassword(req.getParameter("password"));
         boolean userEntry = req.getParameter("company") == null;
         boolean rememberMe = req.getParameter("remember-me") != null;
 
@@ -50,32 +54,21 @@ public class AuthorisationServlet extends HttpServlet {
             if (PasswordProcessor.checkUserCredentials(email, password)) {
                 req.getSession().setAttribute("userType", "user");
                 req.getSession().setAttribute("user", email);
-                setCookie(req, resp, rememberMe, password);
+                CookieService.setCookie(req, resp, rememberMe, "user");
                 resp.sendRedirect("./profile");
             }
         }
         else if (PasswordProcessor.checkCompanyCredentials(email, password)) {
-            System.out.println("Got right company credentials");
+            System.out.println("Company creds are correct");
             req.getSession().setAttribute("userType", "company");
             req.getSession().setAttribute("user", email);
-            setCookie(req, resp, rememberMe, password);
+            CookieService.setCookie(req, resp, rememberMe, "company");
             resp.sendRedirect("./company");
         }
         else {
+            System.out.println("Company credits: " + PasswordProcessor.checkCompanyCredentials(email, password));
+            System.out.println("Go to ./auth");
             resp.sendRedirect("./auth");
-        }
-    }
-
-    private void setCookie(HttpServletRequest req, HttpServletResponse resp, boolean rememberMe, String password) {
-        if (rememberMe) {
-            Cookie cookie = new Cookie("rememberId", req.getSession().getAttribute("user") + "!" + password + "!" + req.getSession().getAttribute("userType"));
-            cookie.setMaxAge(60 * 60 * 24 * 365); // time - needs to be thrown to resources!
-            resp.addCookie(cookie);
-        }
-        else {
-            Cookie cookie = new Cookie("rememberId", "");
-            cookie.setMaxAge(0); // time - needs to be thrown to resources!
-            resp.addCookie(cookie);
         }
     }
 }

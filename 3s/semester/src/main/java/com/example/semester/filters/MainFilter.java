@@ -2,6 +2,7 @@ package com.example.semester.filters;
 
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.User;
+import com.example.semester.utils.CookieService;
 import com.example.semester.utils.PasswordProcessor;
 import com.example.semester.utils.Service;
 
@@ -19,7 +20,7 @@ public class MainFilter extends HttpFilter {
     public void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         System.out.println("MainFilter called");
         if (!(req.getCookies() == null)) {
-            restoreSession(req, res);
+            CookieService.restoreSession(req, res);
         }
 
         if (req.getSession().getAttribute("user") == null) {
@@ -27,30 +28,5 @@ public class MainFilter extends HttpFilter {
             return;
         }
         chain.doFilter(req, res);
-    }
-
-    private void restoreSession(HttpServletRequest req, HttpServletResponse res) {
-        for (Cookie cookie : req.getCookies()) {
-            if (cookie.getName().equals("rememberId") && !cookie.getValue().isEmpty()) {
-                String email = cookie.getValue().split("!")[0];
-                String password = cookie.getValue().split("!")[1];
-                String userType = cookie.getValue().split("!")[2];
-                System.out.println("UserType: " + userType);
-                if (userType.equals("company") && !PasswordProcessor.checkCompanyCredentials(email, password) ||
-                        userType.equals("user") && !PasswordProcessor.checkUserCredentials(email, password)) {
-                    Cookie c = new Cookie("rememberId", null);
-                    c.setMaxAge(0);
-                    res.addCookie(c);
-                    try {
-                        res.sendRedirect("./auth");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                req.getSession().setAttribute("userType", (userType.equals("user")) ? "user" : "company");
-                System.out.println("Set req userType: " + req.getSession().getAttribute("userType"));
-                req.getSession().setAttribute("user", email);
-            }
-        }
     }
 }
