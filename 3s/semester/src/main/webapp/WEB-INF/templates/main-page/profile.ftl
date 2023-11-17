@@ -25,7 +25,16 @@
     </div>
     <h2>FindCure</h2>
 </header>
-
+<dialog id="hidden">
+    <div class="dialog-content">
+        <#if user.getAbout()?length == 0>
+            <h5>Ничего нет!</h5>
+        <#else>
+            <h5>${user.getAbout()}</h5>
+        </#if>
+        <input type="button" id="closeDialog" value="close">
+    </div>
+</dialog>
 <div class="main-page">
     <#include "menu-buttons.ftl">
     <@buttons/>
@@ -39,11 +48,14 @@
                 <img class="profile-picture" src="./profileImages/${userType}/${user.getAvatar()}" alt="No avatar">
             </#if>
 
-            <#if userType == "user">
-                <h2>${user.getName() + " " + user.getSurname()}</h2>
-            <#elseif userType == "company">
-                <h2>Company: ${user.getName()}</h2>
-            </#if>
+            <div class="name-field">
+                <#if userType == "user">
+                    <h2>${user.getName() + " " + user.getSurname()}</h2>
+                <#elseif userType == "company">
+                    <h2>Company: ${user.getName()}</h2>
+                </#if>
+                <h5 id="expandAbout">Show more</h5>
+            </div>
 
         </div>
         <div class="content-container">
