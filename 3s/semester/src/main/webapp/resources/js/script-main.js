@@ -90,4 +90,18 @@ $(document).ready(() => {
     $('#users').on("click", (event) => {
         fade("./users")
     })
+
+    $('#recommendations').on("click", (event) => {
+        fade("./recommendations")
+    })
+
+    $("#exit").on("click", (event) => {
+        $.ajax({
+            url: "./exit",
+            method: "POST",
+            success: () => {
+                fade("./auth")
+            }
+        })
+    })
 })

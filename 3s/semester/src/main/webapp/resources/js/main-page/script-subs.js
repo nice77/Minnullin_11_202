@@ -53,7 +53,6 @@ $(document).ready(() => {
 
     const drawUsers = (users) => {
         const userList = $(".subs-list")
-        userList.get(0).innerHTML = ''
         if (users.length === 0) {
             userList.append($("<h3>", {
                 text: "Никого нет!"
@@ -86,11 +85,13 @@ $(document).ready(() => {
 
     $("#authors").on("click", (event) => {
         offset = 0
+        $(".subs-list").get(0).innerHTML = ''
         fetchUsers("authors")
     })
 
     $("#followers").on("click", (event) => {
         offset = 0
+        $(".subs-list").get(0).innerHTML = ''
         fetchUsers("followers")
     })
 })

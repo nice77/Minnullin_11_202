@@ -81,13 +81,14 @@ public class CookieService {
                     req.getSession().setAttribute("userType", (userType.equals("user")) ? "user" : "company");
                     req.getSession().setAttribute("user", email);
                 }
-                else {
-                    try {
-                        res.sendRedirect("./auth");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+//                else {
+//                    try {
+//                        res.sendRedirect("./auth");
+//                        return;
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
             }
         }
     }

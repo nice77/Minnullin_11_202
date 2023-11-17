@@ -38,20 +38,7 @@
             <input type="radio" id="authors" name="usersType" checked/>
             <label for="authors" class="label-select-btn">Подписки</label>
         </div>
-        <div class="subs-list">
-<#--            <#list authors as user>-->
-<#--                <div class="content-header" data-user-id="${user.getId()}">-->
-<#--                    <#if user.getAvatar() == "default.png">-->
-<#--                        <img class="profile-picture" src="./resources/assets/images/default.png" alt="No avatar">-->
-<#--                    <#else>-->
-<#--                        <img class="profile-picture" src="./profileImages/user/${user.getAvatar()}" alt="No avatar">-->
-<#--                    </#if>-->
-<#--                    <h2>${user.getName() + " " + user.getSurname()}</h2>-->
-<#--                </div>-->
-<#--            <#else>-->
-<#--                <h3>Вы ни на кого не подписаны!</h3>-->
-<#--            </#list>-->
-        </div>
+        <div class="subs-list"></div>
         <div id="bottom-crosser"></div>
     </div>
 </div>
