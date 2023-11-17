@@ -4,7 +4,7 @@ import com.example.semester.DAO.FollowDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.Follow;
 import com.example.semester.models.User;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StorageService;
 import com.example.semester.utils.UserRequestTypes;
 import com.google.gson.Gson;
 
@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @WebServlet(value="/followsConnection")
 public class FollowsConnectionServlet extends HttpServlet {
@@ -44,10 +42,10 @@ public class FollowsConnectionServlet extends HttpServlet {
             out = username.isEmpty() ? new ArrayList<>() : (new UserDAO()).getSpecific(query);
         }
         else if (usersRequestType.equals(UserRequestTypes.FOLLOWERS.getType())) {
-            out = Service.getCurrentUserFollowers(req.getSession().getAttribute("user").toString(), offset);
+            out = StorageService.getCurrentUserFollowers(req.getSession().getAttribute("user").toString(), offset);
         }
         else if (usersRequestType.equals(UserRequestTypes.AUTHORS.getType())) {
-            out = Service.getCurrentUserAuthors(req.getSession().getAttribute("user").toString(), offset);
+            out = StorageService.getCurrentUserAuthors(req.getSession().getAttribute("user").toString(), offset);
         }
 
         resp.getWriter().write((new Gson()).toJson(out));

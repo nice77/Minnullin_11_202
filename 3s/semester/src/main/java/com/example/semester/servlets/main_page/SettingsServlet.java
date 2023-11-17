@@ -5,7 +5,8 @@ import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.Company;
 import com.example.semester.models.User;
 import com.example.semester.config.FreemarkerConfig;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StorageService;
+import com.example.semester.utils.StringService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -64,14 +65,14 @@ public class SettingsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Class<?> cls = Class.forName("com.example.semester.models." + Service.capitalize(req.getSession().getAttribute("userType").toString()));
+            Class<?> cls = Class.forName("com.example.semester.models." + StringService.capitalize(req.getSession().getAttribute("userType").toString()));
             Class<?> daoObjectClass =
                     Class.forName("com.example.semester.DAO."
-                            + Service.capitalize(req.getSession().getAttribute("userType").toString()) + "DAO");
+                            + StringService.capitalize(req.getSession().getAttribute("userType").toString()) + "DAO");
             Object daoObject = daoObjectClass.newInstance();
             Object userObject = daoObjectClass.getDeclaredMethod("getByEmail", String.class).invoke(daoObject, req.getSession().getAttribute("user"));
 
-            Service.setObjectFields(cls, req, userObject);
+            StorageService.setObjectFields(cls, req, userObject);
 
             Method updateMethod = daoObjectClass.getDeclaredMethod("update", userObject.getClass());
             updateMethod.invoke(daoObject, userObject);

@@ -1,7 +1,7 @@
 package com.example.semester.DAO;
 
 import com.example.semester.database.DB;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StringService;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -16,10 +16,10 @@ abstract public class AbstractDAO<T> {
     protected Object transfer(ResultSet rs) {
         try {
             ResultSetMetaData rsmt = rs.getMetaData();
-            System.out.println("Column name: " + rsmt.getTableName(1));
+//            System.out.println("Column name: " + rsmt.getTableName(1));
             String naym = rsmt.getTableName(1);
-            String name = Service.getClassName(naym);
-            System.out.println("ClassName: com.example.semester.models." + name);
+            String name = StringService.getClassName(naym);
+//            System.out.println("ClassName: com.example.semester.models." + name);
             Class<?> cls = Class.forName("com.example.semester.models." + name);
             Object obj = cls.newInstance();
 
@@ -27,16 +27,16 @@ abstract public class AbstractDAO<T> {
                 String columnName = rsmt.getColumnName(i + 1);
                 Method m;
                 if (columnName.indexOf('_') != -1) {
-                    columnName = Service.getAttributeName(columnName);
+                    columnName = StringService.getAttributeName(columnName);
                 }
-                System.out.println("Getting method: " + "set" + Service.capitalize(columnName));
+//                System.out.println("Getting method: " + "set" + Service.capitalize(columnName));
                 if (columnName.toLowerCase().contains("date")) {
-                    System.out.println("In date branch");
-                    m = cls.getDeclaredMethod("set" + Service.capitalize(columnName),
+//                    System.out.println("In date branch");
+                    m = cls.getDeclaredMethod("set" + StringService.capitalize(columnName),
                             Date.class);
                 }
                 else {
-                    m = cls.getDeclaredMethod("set" + Service.capitalize(columnName),
+                    m = cls.getDeclaredMethod("set" + StringService.capitalize(columnName),
                                     Class.forName(rsmt.getColumnClassName(i + 1)));
                 }
                 m.invoke(obj, rs.getObject(rsmt.getColumnLabel(i + 1)));
@@ -50,11 +50,10 @@ abstract public class AbstractDAO<T> {
     private String getUpdateQuery(String tableName) {
         try {
             String query = "update " + tableName + " set ";
-            Class cls = Class.forName("com.example.semester.models." + Service.getClassName(tableName));
+            Class cls = Class.forName("com.example.semester.models." + StringService.getClassName(tableName));
             for (Field field : cls.getDeclaredFields()) {
-                System.out.println("Field: " + field.getName());
                 if (!field.getName().equals("id")) {
-                    query += Service.getColumnName(field.getName()) + " = ?, ";
+                    query += StringService.getColumnName(field.getName()) + " = ?, ";
                 }
             }
             query = query.substring(0, query.length() - 2) + " where id = ?";
@@ -65,8 +64,8 @@ abstract public class AbstractDAO<T> {
     }
 
     public void update(T element) {
-        String query = getUpdateQuery(Service.getTableName(element.getClass().getName()));
-        System.out.println("Update query: " + query);
+        String query = getUpdateQuery(StringService.getTableName(element.getClass().getName()));
+//        System.out.println("Update query: " + query);
         try (PreparedStatement s = this.database.getConnection().prepareStatement(query)) {
             Class cls = Class.forName(element.getClass().getName());
             insertValue(element, cls, query, false);
@@ -84,7 +83,7 @@ abstract public class AbstractDAO<T> {
             String valuesToAdd = "values (";
             for (Field field : cls.getDeclaredFields()) {
                 if (!field.getName().equals("id")) {
-                    query += Service.getColumnName(field.getName()) + ", ";
+                    query += StringService.getColumnName(field.getName()) + ", ";
                     valuesToAdd += "?, ";
                 }
             }
@@ -104,7 +103,7 @@ abstract public class AbstractDAO<T> {
 
                 Field field = cls.getDeclaredFields()[i];
                 String className = field.getType().getName();
-                Method m = cls.getDeclaredMethod("get" + Service.capitalize(field.getName()));
+                Method m = cls.getDeclaredMethod("get" + StringService.capitalize(field.getName()));
 
                 if (className.toLowerCase().contains("int")) {
                     if (!field.getName().equals("id")) {
@@ -135,7 +134,7 @@ abstract public class AbstractDAO<T> {
 
 
     public void delete(T element) {
-        String tableName = Service.getTableName(element.getClass().getName());
+        String tableName = StringService.getTableName(element.getClass().getName());
         String query = "delete from " + tableName + " where id = ?";
         try (PreparedStatement s = this.database.getConnection().prepareStatement(query)) {
             Class cls = Class.forName(element.getClass().getName());

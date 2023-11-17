@@ -1,4 +1,4 @@
-package com.example.semester.servlets;
+package com.example.semester.servlets.createPostServlet;
 
 import com.example.semester.DAO.CompanyDAO;
 import com.example.semester.DAO.PostDAO;
@@ -7,7 +7,7 @@ import com.example.semester.DAO.VacancyDAO;
 import com.example.semester.config.FreemarkerConfig;
 import com.example.semester.models.Post;
 import com.example.semester.models.Vacancy;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StringService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -25,7 +25,6 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,11 +77,11 @@ public class CreateServlet extends HttpServlet {
                     System.out.println("Result field: " + resField + "; " + "Name: " + s);
                     if (s.toLowerCase().contains("date")) {
                         DateFormat formatter = new SimpleDateFormat("yy-MM-dd");
-                        m = Vacancy.class.getDeclaredMethod("set" + Service.capitalize(s), Date.class);
+                        m = Vacancy.class.getDeclaredMethod("set" + StringService.capitalize(s), Date.class);
                         m.invoke(vacancy, formatter.parse(resField));
                     }
                     else {
-                        m = Vacancy.class.getDeclaredMethod("set" + Service.capitalize(s), String.class);
+                        m = Vacancy.class.getDeclaredMethod("set" + StringService.capitalize(s), String.class);
                         m.invoke(vacancy, resField);
                     }
                 }
@@ -99,7 +98,7 @@ public class CreateServlet extends HttpServlet {
                     Part part = req.getPart(s);
                     String resField = new BufferedReader(new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
                     System.out.println("Result field: " + resField + "; " + "Name: " + s);
-                    Method m = Post.class.getDeclaredMethod("set" + Service.capitalize(s), String.class);
+                    Method m = Post.class.getDeclaredMethod("set" + StringService.capitalize(s), String.class);
                     m.invoke(post, resField);
                 }
                 if (postId != null) {

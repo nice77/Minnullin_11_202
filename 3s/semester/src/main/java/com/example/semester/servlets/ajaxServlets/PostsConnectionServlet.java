@@ -5,7 +5,7 @@ import com.example.semester.DAO.PostDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.Comment;
 import com.example.semester.models.Post;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StorageService;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -30,7 +30,7 @@ public class PostsConnectionServlet extends HttpServlet {
         "join follows on users.id = follows.author\n" +
         "where follows.follower = " + currentUserId + "\n"+
         "order by posts.id desc limit 10 offset " + offset;
-        List<Map<String, String>> out = Service.executeQuery(query);
+        List<Map<String, String>> out = StorageService.executeQuery(query);
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().write((new Gson()).toJson(out));
     }

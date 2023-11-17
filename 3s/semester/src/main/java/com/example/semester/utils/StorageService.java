@@ -1,6 +1,5 @@
 package com.example.semester.utils;
 
-import com.example.semester.DAO.CompanyDAO;
 import com.example.semester.DAO.FollowDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.database.DB;
@@ -20,57 +19,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Service {
-    // method getClassName is used to process class name from table name
-    public static String getClassName(String name) {
-        String out;
-        out = name.substring(0, name.length() - 1).replace("ie", "y");
-        out = out.substring(0, 1).toUpperCase() + out.substring(1);
-        return out;
-    }
-
-    // method getAttributeName is used to process class attribute name from table column
-    public static String getAttributeName(String name) {
-        String out;
-        int foundIndexOfSpace = name.indexOf('_');
-        out = name.replace(String.valueOf(name.charAt(foundIndexOfSpace)), "");
-        out = out.substring(0, foundIndexOfSpace) +
-                out.substring(foundIndexOfSpace, foundIndexOfSpace + 1).toUpperCase() +
-                out.substring(foundIndexOfSpace + 1);
-        return out;
-    }
-
-    public static String capitalize(String str) {
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
-    }
-
-    // getColumnName is used to process column name from class attribute name
-    public static String getColumnName(String name) {
-        for (int i = 0; i < name.length(); i++) {
-            char letter = name.charAt(i);
-            if (65 <=  letter && letter <= 90) {
-                name = name.replace(String.valueOf(name.charAt(i)), "_" + (char) (letter + 32));
-                System.out.println("Replaced: " + name);
-            }
-        }
-        return name;
-    }
-
-
-    public static String getTableName(String classPath) {
-        String[] classPathSplit = classPath.split("\\.");
-        String className = classPathSplit[classPathSplit.length - 1].toLowerCase();
-        if (className.charAt(className.length() - 1) == 'y') {
-            className = className.replace(className.charAt(className.length() - 1) + "", "ie");
-        }
-        className += "s";
-        return className;
-    }
-
-    // Method to write into file a new profile picture (and also images)
+public class StorageService {
     public static void writeToFile(InputStream is, String path, String name) {
         try {
             OutputStream os = new FileOutputStream(path + name);
@@ -94,7 +45,7 @@ public class Service {
                 if (field.getName().equals("id")) {
                     continue;
                 }
-                Method m = cls.getDeclaredMethod("set" + Service.capitalize(field.getName()), String.class);
+                Method m = cls.getDeclaredMethod("set" + StringService.capitalize(field.getName()), String.class);
                 Part part = req.getPart(field.getName());
                 if (part.getSize() == 0) {
                     continue;
@@ -109,7 +60,7 @@ public class Service {
                     }
 
                     name = (System.nanoTime() + name + System.nanoTime()).hashCode() + ".jpg";
-                    Service.writeToFile(part.getInputStream(), path, name);
+                    StorageService.writeToFile(part.getInputStream(), path, name);
                     resField = name;
                 } else {
                     resField = new BufferedReader(new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
@@ -138,38 +89,7 @@ public class Service {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Got out: " + out);
         return out;
-    }
-
-
-    private static Statement spec;
-
-    static {
-        try {
-            spec = DB.getInstance().getConnection().createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void updateAndDeclareSQLTransaction(boolean started, String postId) {
-        try {
-            if (!started) {
-                spec = DB.getInstance().getConnection().createStatement();
-                spec.execute("begin;");
-                spec.execute("declare c1 cursor for select * from comments where post_id = " + postId);
-            }
-            else {
-                spec.execute("close c1");
-                spec.execute("commit");
-                spec.close();
-                spec = null;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
     }
 
     public static List<User> getCurrentUserFollowers(String userEmail, Integer offset) {

@@ -1,13 +1,11 @@
 package com.example.semester.servlets.ajaxServlets;
 
-import com.example.semester.DAO.CommentDAO;
 import com.example.semester.DAO.SubDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.DAO.VacancyDAO;
-import com.example.semester.models.Comment;
 import com.example.semester.models.Sub;
 import com.example.semester.models.Vacancy;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StorageService;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -32,7 +30,7 @@ public class VacanciesGetterServlet extends HttpServlet {
 
         Gson gson = new Gson();
         if (req.getParameter("getAll").equals("true")) {
-            String output = gson.toJson(Service.executeQuery(query));
+            String output = gson.toJson(StorageService.executeQuery(query));
             System.out.println(output);
             resp.setCharacterEncoding("utf-8");
             resp.getWriter().write(output);

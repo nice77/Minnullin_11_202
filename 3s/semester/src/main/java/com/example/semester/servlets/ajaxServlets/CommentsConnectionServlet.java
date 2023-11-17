@@ -3,7 +3,7 @@ package com.example.semester.servlets.ajaxServlets;
 import com.example.semester.DAO.CommentDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.Comment;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StorageService;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -29,7 +29,7 @@ public class CommentsConnectionServlet extends HttpServlet {
                 "join users on users.id = comments.user_id " +
                 "where post_id = " + postId + " order by id desc limit 10 offset " + offset;
 
-        List<Map<String, String>> out = Service.executeQuery(query);
+        List<Map<String, String>> out = StorageService.executeQuery(query);
         resp.getWriter().write(gson.toJson(out));
     }
 
@@ -49,7 +49,7 @@ public class CommentsConnectionServlet extends HttpServlet {
                 "join users on users.id = comments.user_id " +
                 "where post_id = " + postId + " order by comments.id desc limit 1";
 
-        List<Map<String, String>> out = Service.executeQuery(query);
+        List<Map<String, String>> out = StorageService.executeQuery(query);
         resp.getWriter().write((new Gson()).toJson(out));
     }
 }

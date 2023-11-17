@@ -3,7 +3,7 @@ package com.example.semester.servlets.ajaxServlets;
 import com.example.semester.DAO.SubDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.Sub;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StorageService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +27,7 @@ public class SubsConnectionServlet extends HttpServlet {
             System.out.println("in remove branch");
             (new UserDAO()).getByEmail(req.getSession().getAttribute("user").toString());
             String rowId =
-                    Service.executeQuery("select * from subs where vacancy_id = " + req.getParameter("vacancyId") +
+                    StorageService.executeQuery("select * from subs where vacancy_id = " + req.getParameter("vacancyId") +
                             " and user_id = " + (new UserDAO()).getByEmail(req.getSession().getAttribute("user").toString()).getId()).get(0).get("id");
             sub.setId(Integer.parseInt(rowId));
             subDAO.delete(sub);

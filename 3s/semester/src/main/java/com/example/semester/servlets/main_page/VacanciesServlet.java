@@ -2,12 +2,11 @@ package com.example.semester.servlets.main_page;
 
 import com.example.semester.DAO.*;
 import com.example.semester.config.FreemarkerConfig;
-import com.example.semester.database.DB;
 import com.example.semester.models.Company;
 import com.example.semester.models.Post;
 import com.example.semester.models.User;
 import com.example.semester.models.Vacancy;
-import com.example.semester.utils.Service;
+import com.example.semester.utils.StorageService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -17,10 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +73,7 @@ public class VacanciesServlet extends HttpServlet {
                     " join subs on vacancies.id = subs.vacancy_id where subs.user_id = " +
                     (new UserDAO()).getByEmail(req.getSession().getAttribute("user").toString()).getId();
 
-            List<Map<String, String>> data = Service.executeQuery(query);
+            List<Map<String, String>> data = StorageService.executeQuery(query);
             root.put("vacanciesMapList", data);
         }
         root.put("userType", req.getSession().getAttribute("userType"));
