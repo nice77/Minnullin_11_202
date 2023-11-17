@@ -41,8 +41,6 @@
             <#include "company-post-form.ftl">
             <@companyPostForm/>
         </#if>
-        <input type="file" id="inputFileUploader" name="image">
-        <input type="button" id="clickToUpload" value="Добавить изображения">
         <input type="submit" value="Сохранить изменения" class="submit-button">
     </form>
 </div>
