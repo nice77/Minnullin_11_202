@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-text: #ccc;
+    --color-background-basement: #050505;
+}
+
+:root::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--color-background-tertiary);
+}
+
+:root::-webkit-scrollbar-thumb {
+    background-color: var(--color-background-secondary);
+    border-radius: 4px;
+}
+
+body {
+    background-color: var(--color-background-main);
+}
+
+p {
+    color: var(--color-white);
+}
+
+
+/* hero-section section */
+
+.hero-section {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../assets/images/leafs.jpg");
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1.title {
+    font-size: 100pt;
+}
+
+.subtitle {
+    font-family: futura-medium;
+}
+
+button {
+    background: transparent;
+    border: solid #cccccc;
+    border-radius: 10px;
+    color: #cccccc;
+    font-family: futura-medium;
+    font-size: 14pt;
+    padding: 5pt;
+    margin: 0 0 5% 0;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+button:hover {
+    box-shadow: 0 0 30px black;
+}
+
+
+/* content-section section */
+
+.content-section {
+    background-color: var(--color-background-main);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20% 0;
+}
+
+.content-section__column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 1;
+    align-items: center;
+    justify-content: space-around;
+}
+
+img {
+    max-width: 40vw;
+    max-height: 40vh;
+    border-radius: 10px;
+}
+
+.content-section__item {
+    margin: 10%;
+}
+
+/* basement section */
+.basement {
+    background-color: var(--color-background-basement);
+    padding: 5% 0 2% 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.basement button:hover {
+    box-shadow: 0 0 10px darkgreen;
+}
+
+@media only screen and (max-width: 426px) {
+    h1.title {
+        font-size: 40pt;
+    }
+}
