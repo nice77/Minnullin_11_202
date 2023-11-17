@@ -29,7 +29,6 @@ public class Service {
         String out;
         out = name.substring(0, name.length() - 1).replace("ie", "y");
         out = out.substring(0, 1).toUpperCase() + out.substring(1);
-        System.out.println("Got: " + out);
         return out;
     }
 
