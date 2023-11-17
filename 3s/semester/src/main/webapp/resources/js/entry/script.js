@@ -2,15 +2,17 @@ $(document).ready(() => {
     const emailRegexp = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
     const phoneRegexp = /^((\+7|7|8)+([0-9]){10})$/
     const passwordRegexp = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$/
+    const nameRegexp = /^([A-Z]|[a-z]|[А-Я]|[а-я]){1,}$/
 
 
+    const checkbox = $("#company")
     const submitBtn = $("#submit-btn")
     submitBtn.enabled = false
 
-    let emailBool = false
-    let passBool = false
-    let phoneBool = false
-    let nameBool = false
+    let emailBool = new Boolean(false)
+    let passBool = new Boolean(false)
+    let phoneBool = new Boolean(false)
+    let nameBool = new Boolean(false)
 
     gsap.from("form > *", {
         duration: 0.2,
@@ -29,44 +31,30 @@ $(document).ready(() => {
         })
     }
 
+    const checkEmail = () => {
+        $.ajax({
+            url: "./registerConnection",
+            method: "GET",
+            data: {
+                isCompany: checkbox.is(":checked") ? "company" : "user",
+                email: emailField.val()
+            },
+            success: (resultString) => {
+                emailBool.value = JSON.parse(resultString);
+                console.log(emailBool)
+            }
+        })
+    }
+
     $("#redirect-btn").on("click", (event) => fadeOut(path="./register"))
 
     $("#redirect-btn-register").on("click", (event) => fadeOut(path="./auth"))
 
-
-    // if (document.getElementsByName("email")[0] != null) {
-    //     document.getElementsByName("email")[0].oninput = (event) => {
-    //         if (!emailRegexp.test(event.target.value) && event.target.value.length !== 0) {
-    //             event.target.style.backgroundColor = "#ff2f2f"
-    //             document.getElementById('submit-btn').disabled = true
-    //         }
-    //         else {
-    //             event.target.style.backgroundColor = "#222"
-    //             document.getElementById('submit-btn').disabled = false
-    //         }
-    //     }
-    // }
-    //
-    // if (document.getElementsByName("phone")[0] != null) {
-    //     document.getElementsByName("phone")[0].oninput = (event) => {
-    //         if (!phoneRegexp.test(event.target.value) && event.target.value.length !== 0) {
-    //             event.target.style.backgroundColor = "#ff2f2f"
-    //             document.getElementById('submit-btn').disabled = true
-    //         }
-    //         else {
-    //             event.target.style.backgroundColor = "#222"
-    //             document.getElementById('submit-btn').disabled = false
-    //         }
-    //     }
-    // }
-
     const checkAll = () => {
-        console.log(emailBool)
-        console.log(nameBool)
-        console.log(passBool)
-        console.log(phoneBool)
-        console.log("   ")
-        if (emailBool && nameBool && passBool && phoneBool) {
+        if (emailBool.value && nameBool.value && passBool.value && phoneBool.value) {
+            submitBtn.prop("disabled", false)
+        }
+        else if (emailBool.value && !nameBool.value && checkbox.checked && passBool.value && phoneBool.value ) {
             submitBtn.prop("disabled", false)
         }
         else {
@@ -74,48 +62,57 @@ $(document).ready(() => {
         }
     }
 
-    const emailField = $("#email")
-    emailField.on("input", (event) => {
-        if (!emailRegexp.test(emailField.val()) && emailField.val().length !== 0) {
+    const onInputEventHandler = (event, regexp, inputField, booleanValue) => {
+        if (!regexp.test(inputField.val()) && inputField.val().length !== 0) {
             event.target.style.backgroundColor = "#ff2f2f"
-            emailBool = false
+            booleanValue.value = false
         }
         else {
             event.target.style.backgroundColor = "#222"
-            emailBool = true
+            booleanValue.value = true
         }
+    }
+
+    const onNameFieldInputHandler = (event) => {
+        const isCompany = checkbox.is(":checked")
+        if (!nameRegexp.test(nameField.val()) && !isCompany) {
+            event.target.style.backgroundColor = "#ff2f2f"
+            nameBool.value = false
+        }
+        else {
+            event.target.style.backgroundColor = "#222"
+            nameBool.value = true
+        }
+    }
+
+    checkbox.on("change", (event) => {
+        console.log(42)
+        onNameFieldInputHandler(event)
+        checkAll()
+    })
+
+    const emailField = $("#email")
+    emailField.on("input", (event) => {
+        onInputEventHandler(event, emailRegexp, emailField, emailBool)
+        checkEmail()
         checkAll()
     })
 
     const phoneField = $("#phone")
     phoneField.on("input", (event) => {
-        if (!phoneRegexp.test(phoneField.val()) && phoneField.val().length !== 0) {
-            event.target.style.backgroundColor = "#ff2f2f"
-            phoneBool = false
-        }
-        else {
-            event.target.style.backgroundColor = "#222"
-            phoneBool = true
-        }
+        onInputEventHandler(event, phoneRegexp, phoneField, phoneBool)
         checkAll()
     })
 
     const nameField = $("#name")
     nameField.on("input", (event) => {
-        nameBool = nameField.val().length > 0
+        onNameFieldInputHandler(event)
         checkAll()
     })
 
     const passwordField = $("#password")
     passwordField.on("input", (event) => {
-        if (!passwordRegexp.test(passwordField.val())) {
-            event.target.style.backgroundColor = "#ff2f2f"
-            passBool = false
-        }
-        else {
-            event.target.style.backgroundColor = "#222"
-            passBool = true
-        }
+        onInputEventHandler(event, passwordRegexp, passwordField, passBool)
         checkAll()
     })
 })
