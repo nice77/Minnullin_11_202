@@ -239,7 +239,7 @@ body {
     width: 100%;
 }
 
-.subs-list {
+.subs-list, .recommends-list {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -273,6 +273,14 @@ body {
 #authors:checked + label {
     border-bottom: solid 2px var(--color-green);
 }
+
+.users-list > div, .recommends-list > div {
+    margin: 8px 0;
+}
+.exit {
+    color: var(--color-red)
+}
+
 
 /* media queries */
 @media only screen and (max-width: 426px) {

@@ -4,6 +4,7 @@ import com.example.semester.DAO.FollowDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.models.Follow;
 import com.example.semester.models.User;
+import com.example.semester.utils.RecommendationService;
 import com.example.semester.utils.StorageService;
 import com.example.semester.utils.UserRequestTypes;
 import com.google.gson.Gson;
@@ -23,7 +24,16 @@ public class FollowsConnectionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String usersRequestType = req.getParameter("usersRequestType");
         Integer offset = Integer.valueOf(req.getParameter("offset"));
+        Gson gson = new Gson();
         List<User> out = null;
+
+        if (req.getParameter("ignoreUserType") != null) {
+            User user = (new UserDAO()).getByEmail(req.getSession().getAttribute("user").toString());
+            List<User> recommendedUsers = RecommendationService.getUserRecommendations(user, offset);
+            System.out.println("resp: " + gson.toJson(recommendedUsers));
+            resp.getWriter().write(gson.toJson(recommendedUsers));
+            return;
+        }
 
         /*
         * главный вопрос в том, как мы получаем данные:
@@ -48,7 +58,7 @@ public class FollowsConnectionServlet extends HttpServlet {
             out = StorageService.getCurrentUserAuthors(req.getSession().getAttribute("user").toString(), offset);
         }
 
-        resp.getWriter().write((new Gson()).toJson(out));
+        resp.getWriter().write(gson.toJson(out));
     }
 
     @Override

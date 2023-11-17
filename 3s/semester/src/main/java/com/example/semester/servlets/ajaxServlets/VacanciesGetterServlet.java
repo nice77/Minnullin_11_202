@@ -4,7 +4,9 @@ import com.example.semester.DAO.SubDAO;
 import com.example.semester.DAO.UserDAO;
 import com.example.semester.DAO.VacancyDAO;
 import com.example.semester.models.Sub;
+import com.example.semester.models.User;
 import com.example.semester.models.Vacancy;
+import com.example.semester.utils.RecommendationService;
 import com.example.semester.utils.StorageService;
 import com.google.gson.Gson;
 
@@ -22,13 +24,20 @@ public class VacanciesGetterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDAO userDAO = new UserDAO();
+        Gson gson = new Gson();
+        String offset = req.getParameter("offset");
+        if (offset != null) {
+            User user = userDAO.getByEmail(req.getSession().getAttribute("user").toString());
+            List<Vacancy> recommendations = RecommendationService.getVacancyRecommendations(user, Integer.parseInt(offset));
+            resp.getWriter().write(gson.toJson(recommendations));
+            return;
+        }
         String query = "select vacancies.* from vacancies\n" +
                 "except select vacancies.* from vacancies\n" +
                 "join subs on vacancies.id = subs.vacancy_id\n" +
                 "where subs.user_id = " + userDAO.getByEmail(req.getSession().getAttribute("user").toString()).getId();
         System.out.println(query);
 
-        Gson gson = new Gson();
         if (req.getParameter("getAll").equals("true")) {
             String output = gson.toJson(StorageService.executeQuery(query));
             System.out.println(output);
