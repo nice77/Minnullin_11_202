@@ -15,6 +15,9 @@
         <url-pattern>/settings</url-pattern>
         <url-pattern>/vacancies</url-pattern>
         <url-pattern>/create</url-pattern>
+        <url-pattern>/users</url-pattern>
+        <url-pattern>/recommendations</url-pattern>
+        <url-pattern>/news</url-pattern>
     </filter-mapping>
 
     <filter>
