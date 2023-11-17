@@ -15,7 +15,7 @@ $(document).ready(() => {
     let offset = 0
 
     const fetch = () => {
-        if ($("#usersRecommendation").checked) {
+        if ($("#usersRecommendation").is(":checked")) {
             fetchUsers()
         }
         else {

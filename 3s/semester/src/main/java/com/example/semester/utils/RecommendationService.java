@@ -18,7 +18,7 @@ public class RecommendationService {
         int threshold = 0;
         currentUsersAuthors = StorageService.getCurrentUserAuthors(currentUser.getEmail(), offset);
         for (User otherUser : currentUsersAuthors) {
-            if (getSubsSimilarity(currentUser, otherUser) >= threshold) {
+            if (getSubsSimilarity(currentUser, otherUser) > threshold) {
                 return getOtherUserVacancies(currentUser, otherUser);
             }
         }
@@ -43,7 +43,7 @@ public class RecommendationService {
 
         currentUserSubIds.retainAll(otherUserSubIds);
 
-        return (int) ((((float) currentUserSubIds.size()) / currentUserSubIdsSize) * 100);
+        return 100 * currentUserSubIds.size() / currentUserSubIdsSize;
     }
 
     public static List<Vacancy> getOtherUserVacancies(User currentUser, User otherUser) {
@@ -76,6 +76,9 @@ public class RecommendationService {
         int threshold = 0;
         List<User> recommendedUsers = new LinkedList<>();
         for (User otherUser : userDAO.getAll()) {
+            if (otherUser.getId() == currentUser.getId()) {
+                continue;
+            }
             List<Integer> currentUserAuthorsIds = StorageService
                     .getCurrentUserAuthors(currentUser.getEmail(), offset)
                     .stream()
@@ -88,15 +91,13 @@ public class RecommendationService {
                     .map(User::getId)
                     .collect(Collectors.toList());
             currentUserAuthorsIds.retainAll(otherUserAuthorsIds);
-            if (((100.0 * currentUserAuthorsIds.size()) / currentUserAuthorsIdsSize) >= threshold) {
-                otherUserAuthorsIds.removeAll(currentUserAuthorsIds);
-                otherUserAuthorsIds = otherUserAuthorsIds.stream().filter(i -> i != currentUser.getId()).collect(Collectors.toList());
-                recommendedUsers.addAll(otherUserAuthorsIds
-                        .stream()
-                        .map(userDAO::get)
-                        .collect(Collectors.toList()));
+            int similarity = (100 * currentUserAuthorsIds.size()) / currentUserAuthorsIdsSize;
+            System.out.println(otherUser.getName() + " " + currentUserAuthorsIds + "; " + otherUserAuthorsIds + "; " + similarity);
+            if (similarity > threshold) {
+                recommendedUsers.add(otherUser);
             }
         }
+        System.out.println("Recommended users: " + recommendedUsers);
         return recommendedUsers;
     }
 }
