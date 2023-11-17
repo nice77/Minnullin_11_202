@@ -1,19 +1,13 @@
 package com.example.semester.filters;
 
-import com.example.semester.DAO.UserDAO;
-import com.example.semester.models.User;
 import com.example.semester.utils.CookieService;
-import com.example.semester.utils.PasswordProcessor;
-import com.example.semester.utils.Service;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class MainFilter extends HttpFilter {
     @Override
