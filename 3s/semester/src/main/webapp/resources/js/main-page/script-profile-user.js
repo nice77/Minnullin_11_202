@@ -1,6 +1,15 @@
 $(document).ready(() => {
     const subscribeBtn = $("#subscribeBtn")
     const createNewBtn = $("#createNewBtn")
+    const expandAbout = $("#expandAbout")
+    const dialog = $("#hidden")
+
+    expandAbout.on("click", () => {
+        dialog.get(0).show()
+    })
+    $("#closeDialog").on("click", () => {
+        dialog.get(0).close()
+    })
 
     createNewBtn.on("click", (event) => {
         window.location.href = "./create"
