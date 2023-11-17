@@ -6,6 +6,9 @@
             <input type="button" class="menu__button" value="Подписки" id="follows">
             <input type="button" class="menu__button" value="Новости" id="news">
         </#if>
+        <#if userType == "company">
+            <input type="button" class="menu__button" value="Пользователи" id="users">
+        </#if>
         <input type="button" class="menu__button" value="Настройки" id="settings">
     </div>
 </#macro>

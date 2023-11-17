@@ -86,4 +86,8 @@ $(document).ready(() => {
     $('#news').on("click", (event) => {
         fade("./news")
     })
+
+    $('#users').on("click", (event) => {
+        fade("./users")
+    })
 })

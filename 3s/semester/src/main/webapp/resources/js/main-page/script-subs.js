@@ -66,7 +66,7 @@ $(document).ready(() => {
                 class: "content-header",
             }).append($("<img>", {
                 class: "profile-picture",
-                src: item["image"] === "default.png" ? "./resources/assets/images/default.png" : "./profileImages/user/" + item["avatar"]
+                src: item["avatar"] === "default.png" ? "./resources/assets/images/default.png" : "./profileImages/user/" + item["avatar"]
             })).append($("<h2>", {
                 text: item["name"] + " " + item["surname"]
             }))
