@@ -12,6 +12,7 @@
     -fx-text-fill: blue;
     -fx-background-color: transparent;
     -fx-font-size: 40;
+    -fx-padding: 0;
 }
 
 #positioner {

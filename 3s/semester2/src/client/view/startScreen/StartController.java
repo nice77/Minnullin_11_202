@@ -1,4 +1,4 @@
-package client.view;
+package client.view.startScreen;
 
 import client.Resources;
 import javafx.fxml.FXML;
