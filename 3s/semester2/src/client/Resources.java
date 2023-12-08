@@ -7,6 +7,9 @@ public class Resources {
     public static final String WINDOW_STYLE = "/client/assets/style.css";
 
 
+    public static final int SPRITE_ANIMATION_WIDTH = 150;
+    public static final int SPRITE_ANIMATION_HEIGHT = 200;
+
 
     public static final String DPCOMIC_FONT = "/client/assets/dpcomic.ttf";
     public static final int DPCOMIC_FONT_SIZE = 20;
