@@ -24,8 +24,20 @@ public class Server {
                 UUID uuid = UUID.randomUUID();
                 List<ServerConnection> room =
                         createRoom (
-                                new ServerConnection(uuid, serverSocket.accept(), this::sendMessage),
-                                new ServerConnection(uuid, serverSocket.accept(), this::sendMessage)
+                                new ServerConnection(
+                                        uuid,
+                                        serverSocket.accept(),
+                                        this::sendMessage,
+                                        this::checkIfRoomIsCreated,
+                                        this::getPositionInRoom
+                                ),
+                                new ServerConnection(
+                                        uuid,
+                                        serverSocket.accept(),
+                                        this::sendMessage,
+                                        this::checkIfRoomIsCreated,
+                                        this::getPositionInRoom
+                                )
                         ) ;
                 this.roomList.put(uuid, room);
             }
@@ -39,8 +51,21 @@ public class Server {
     }
 
     public void sendMessage(UUID roomId, String message) {
-        List<ServerConnection> room = roomList.get(roomId);
-        room.forEach(item -> item.sendMessage(message));
+        List<ServerConnection> room = this.roomList.get(roomId);
+        room.forEach(item -> item.sendMessageToClient(message));
+    }
+
+    public void checkIfRoomIsCreated(UUID uuid) {
+        List<ServerConnection> room = this.roomList.get(uuid);
+        if (room != null) {
+            room.forEach(item -> item.sendMessageToClient("created=true"));
+        }
+    }
+
+    public int getPositionInRoom(UUID uuid, ServerConnection serverConnection) {
+        List<ServerConnection> room = roomList.get(uuid);
+        System.out.println("Server: position - " + room.indexOf(serverConnection));
+        return room.indexOf(serverConnection);
     }
 
     public static void main(String[] args) {
