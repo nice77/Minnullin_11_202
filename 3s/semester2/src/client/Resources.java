@@ -29,6 +29,8 @@ public class Resources {
     public static final int CHARACTER_IMAGE_RECT_STROKE_WIDTH = 5;
 
 
+    public static final String LOADING_SCREEN = "/client/assets/loadingScreen/loadingScreen.fxml";
+
 
     public static final String FIGHT_SCREEN = "/client/assets/fightScreen/fightScreen.fxml";
     public static final String ARENA_01 = "/client/assets/fightScreen/arena01.png";
