@@ -1,4 +1,4 @@
-package client.view.characterSelectScreen;
+package client.controller;
 
 import client.assets.characters.Characters;
 import javafx.animation.Animation;
@@ -25,10 +25,8 @@ public class SpriteAnimation extends Transition {
             Characters character
     ) {
         this.imageView = imageView;
-        changeProperties(character);
         setCycleDuration(duration);
-        setInterpolator(Interpolator.LINEAR);
-        setCycleCount(Animation.INDEFINITE);
+        changeProperties(character, "IDLE");
     }
 
     @Override
@@ -39,8 +37,8 @@ public class SpriteAnimation extends Transition {
         imageView.setViewport(new Rectangle2D(x, y, this.width, this.height));
     }
 
-    public void changeProperties(Characters character) {
-        int[] props = character.getAnimationProperties().get("idle");
+    public void changeProperties(Characters character, String state) {
+        int[] props = character.getAnimationProperties().get(state);
         this.width = props[0];
         this.height = props[1];
         this.offsetX = props[2];
@@ -48,6 +46,8 @@ public class SpriteAnimation extends Transition {
         this.count = props[4];
 
         this.imageView.setImage(new Image(character.getSpritePath()));
+        setInterpolator(Interpolator.LINEAR);
+        setCycleCount(Animation.INDEFINITE);
     }
 
     public ImageView getImageView() {
