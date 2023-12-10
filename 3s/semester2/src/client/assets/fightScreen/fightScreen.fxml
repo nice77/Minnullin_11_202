@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="client.controller.fightScreen.FightController"
+            prefHeight="400.0" prefWidth="600.0">
+<ImageView fx:id="bgImageView"/>
+<ImageView fx:id="fgImageView"/>
+<ImageView
+        AnchorPane.bottomAnchor="50"
+        fx:id="mainPlayerImageView"
+/>
+<ImageView
+        AnchorPane.bottomAnchor="50"
+        fx:id="otherPlayerImageView"
+/>
+</AnchorPane>

@@ -7,12 +7,19 @@
     src: url(../assets/dpcomic.ttf);
 }
 
-#starterText {
+Label {
     -fx-font-family: DPComic;
-    -fx-text-fill: blue;
     -fx-background-color: transparent;
     -fx-font-size: 40;
     -fx-padding: 0;
+}
+
+
+#starterText {
+    -fx-text-fill: blue;
+}
+#loadingText {
+    -fx-text-fill: white;
 }
 
 #positioner {

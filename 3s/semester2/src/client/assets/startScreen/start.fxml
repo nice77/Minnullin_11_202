@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Label?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="client.view.startScreen.StartController">
+            fx:controller="client.controller.startScreen.StartController">
     <ImageView fx:id="mainImage"/>
     <HBox
             fx:id="positioner"
