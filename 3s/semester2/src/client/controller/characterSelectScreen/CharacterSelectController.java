@@ -1,13 +1,13 @@
-package client.view.characterSelectScreen;
+package client.controller.characterSelectScreen;
 
 import client.Resources;
 import client.assets.characters.Characters;
+import client.controller.SpriteAnimation;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -23,8 +23,8 @@ public class CharacterSelectController {
         mainImage.setImage(image);
         mainImage.setFitWidth(Resources.WINDOW_WIDTH);
         mainImage.setFitHeight(Resources.WINDOW_HEIGHT);
-        characterSprite.setFitWidth(150);
-        characterSprite.setFitHeight(200);
+        characterSprite.setFitWidth(Resources.SPRITE_ANIMATION_WIDTH);
+        characterSprite.setFitHeight(Resources.SPRITE_ANIMATION_HEIGHT);
 
         Rectangle rectangle = initRectangle();
 
@@ -96,5 +96,9 @@ public class CharacterSelectController {
                 this.selectedCharacter = (y == 0) ? Characters.SONYA_BLADE : Characters.SCORPION;
                 break;
         }
+    }
+
+    public Characters getSelectedCharacter() {
+        return selectedCharacter;
     }
 }
