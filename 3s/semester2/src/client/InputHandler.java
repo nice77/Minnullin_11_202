@@ -14,13 +14,13 @@ public class InputHandler implements EventHandler<KeyEvent> {
     public void handle(KeyEvent event) {
         switch (event.getCode()) {
             case D:
-                this.sendEventToServer.sendEventToServer("Sent D");
-//                System.out.println(this.isPressed + " D - input handler");
+                this.sendEventToServer.sendEventToServer("isPressed="+this.isPressed+"&key=D");
                 break;
             case A:
-                this.sendEventToServer.sendEventToServer("Sent A");
-//                System.out.println(this.isPressed + " A - input handler");
+                this.sendEventToServer.sendEventToServer("isPressed="+this.isPressed+"&key=A");
                 break;
+            case E:
+                this.sendEventToServer.sendEventToServer("isPressed="+this.isPressed+"&key=E");
         }
     }
 }
