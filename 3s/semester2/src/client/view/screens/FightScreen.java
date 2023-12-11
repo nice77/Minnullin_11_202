@@ -20,6 +20,8 @@ public class FightScreen extends AbstractScreen {
             throw new RuntimeException(e);
         }
         this.primaryStage = stage;
+        String stylesheet = getClass().getResource(Resources.WINDOW_STYLE).toExternalForm();
+        this.scene.getStylesheets().add(stylesheet);
         initTriggers();
     }
 

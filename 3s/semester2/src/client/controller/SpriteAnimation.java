@@ -4,6 +4,7 @@ import client.assets.characters.Characters;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,10 +45,15 @@ public class SpriteAnimation extends Transition {
         this.offsetX = props[2];
         this.offsetY = props[3];
         this.count = props[4];
+        Platform.runLater(() -> this.imageView.setImage(new Image(character.getSpritePath())));
 
-        this.imageView.setImage(new Image(character.getSpritePath()));
         setInterpolator(Interpolator.LINEAR);
-        setCycleCount(Animation.INDEFINITE);
+        if (!state.equals("HIT")) {
+            setCycleCount(Animation.INDEFINITE);
+        }
+        else {
+            setCycleCount(1);
+        }
     }
 
     public ImageView getImageView() {

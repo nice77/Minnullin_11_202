@@ -3,18 +3,42 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Rectangle?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="client.controller.fightScreen.FightController"
             prefHeight="400.0" prefWidth="600.0">
-<ImageView fx:id="bgImageView"/>
-<ImageView fx:id="fgImageView"/>
-<ImageView
-        AnchorPane.bottomAnchor="50"
-        fx:id="mainPlayerImageView"
-/>
-<ImageView
-        AnchorPane.bottomAnchor="50"
-        fx:id="otherPlayerImageView"
-/>
+    <ImageView fx:id="bgImageView"/>
+    <ImageView fx:id="fgImageView"/>
+
+    <Rectangle AnchorPane.topAnchor="30"
+               AnchorPane.leftAnchor="30"
+               width="200"
+               height="30"
+            fx:id="leftHealthBarRed"/>
+    <Rectangle AnchorPane.topAnchor="30"
+               AnchorPane.leftAnchor="30"
+               width="200"
+               height="30"
+            fx:id="leftHealthBarGreen"/>
+
+    <Rectangle AnchorPane.topAnchor="30"
+               AnchorPane.rightAnchor="30"
+               width="200"
+               height="30"
+            fx:id="rightHealthBarRed"/>
+    <Rectangle AnchorPane.topAnchor="30"
+               AnchorPane.rightAnchor="30"
+               width="200"
+               height="30"
+            fx:id="rightHealthBarGreen"/>
+
+    <ImageView
+            AnchorPane.bottomAnchor="50"
+            fx:id="mainPlayerImageView"
+    />
+    <ImageView
+            AnchorPane.bottomAnchor="50"
+            fx:id="otherPlayerImageView"
+    />
 </AnchorPane>
