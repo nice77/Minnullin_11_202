@@ -25,3 +25,13 @@ Label {
 #positioner {
     -fx-background-color: transparent;
 }
+
+Rectangle {
+    -fx-width: 200px;
+    -fx-height: 50px;
+    -fx-fill: red;
+}
+
+#leftHealthBarGreen, #rightHealthBarGreen {
+    -fx-fill: green;
+}
