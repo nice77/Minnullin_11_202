@@ -4,5 +4,8 @@ public enum States {
     IDLE,
     WALK,
     HIT,
-    BLOCK
+    BLOCK,
+    INJURED,
+    VICTORY,
+    DEAD
 }

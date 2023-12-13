@@ -79,17 +79,37 @@ public class PlayerAndSprite {
     }
 
     public void move(boolean toRight) {
-        System.out.println("Moving, before: " + this.player.getPos().get());
         this.player.move(toRight);
-        System.out.println("After: " + this.player.getPos().get());
         Platform.runLater(() -> this.spriteAnimation.getImageView().setLayoutX(this.player.getPos().get()));
     }
 
     public void moveInjured(boolean toRight) {
-        System.out.println("Moving, before: " + this.player.getPos().get());
         this.player.moveInjured(toRight);
-        System.out.println("After: " + this.player.getPos().get());
         Platform.runLater(() -> this.spriteAnimation.getImageView().setLayoutX(this.player.getPos().get()));
+    }
+
+    public void updatePlayerAnimationOnHit(boolean isReturning) {
+        SpriteAnimation selectedSpriteAnimation = this.getSpriteAnimation();
+        this.stop();
+        if (isReturning) {
+            selectedSpriteAnimation.setRate(3);
+            selectedSpriteAnimation.setOnFinished(e -> {
+                selectedSpriteAnimation.setRate(-3);
+                selectedSpriteAnimation.play();
+                selectedSpriteAnimation.setOnFinished(e1 -> {
+                    this.setState(States.IDLE);
+                    selectedSpriteAnimation.setRate(1);
+                    selectedSpriteAnimation.changeProperties(this.player.getCharacter(), this.player.getState().name());
+                    selectedSpriteAnimation.play();
+                });
+            });
+        }
+        else {
+            selectedSpriteAnimation.setRate(0.7);
+            selectedSpriteAnimation.setOnFinished(null);
+        }
+        selectedSpriteAnimation.changeProperties(this.player.getCharacter(), this.player.getState().name());
+        this.play();
     }
 
     public double getPlayersIntersection(PlayerAndSprite other) {

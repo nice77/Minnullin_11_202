@@ -53,12 +53,8 @@ public class FightController {
                 false
         );
 
-        this.leftPlayer.getPlayer().getHpProperty().addListener((observable, newValue, oldValue) ->
-                Platform.runLater(() -> this.leftHealthBarGreen.setWidth(2 * newValue.doubleValue()))
-        );
-        this.rightPlayer.getPlayer().getHpProperty().addListener((observable, newValue, oldValue) ->
-                Platform.runLater(() -> this.rightHealthBarGreen.setWidth(2 * newValue.doubleValue()))
-        );
+        this.leftPlayer.getPlayer().getHpProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(() -> this.leftHealthBarGreen.setWidth(2 * newValue.doubleValue())));
+        this.rightPlayer.getPlayer().getHpProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(() -> this.rightHealthBarGreen.setWidth(2 * newValue.doubleValue())));
 
         bgImageView.setImage(new Image(Resources.ARENA_01));
         bgImageView.setFitWidth(Resources.WINDOW_WIDTH);
@@ -88,29 +84,25 @@ public class FightController {
             case "Q":
                 if (eventParsed.get("isPressed").equals("true") && selected.getPlayer().getState() != States.HIT) {
                     selected.setState(States.HIT);
-                    SpriteAnimation selectedSpriteAnimation = selected.getSpriteAnimation();
-                    selectedSpriteAnimation.stop();
-                    selectedSpriteAnimation.setRate(3);
-                    selectedSpriteAnimation.setOnFinished(e -> {
-                        selectedSpriteAnimation.setRate(-3);
-                        selectedSpriteAnimation.play();
-                        selectedSpriteAnimation.setOnFinished(e1 -> {
-                            selected.setState(States.IDLE);
-                            selectedSpriteAnimation.setRate(1);
-                            selectedSpriteAnimation.changeProperties(selected.getPlayer().getCharacter(), selected.getPlayer().getState().name());
-                            selectedSpriteAnimation.play();
-                        });
-                    });
-                    selectedSpriteAnimation.changeProperties(selected.getPlayer().getCharacter(), selected.getPlayer().getState().name());
-                    selectedSpriteAnimation.play();
-
+                    selected.updatePlayerAnimationOnHit(true);
                     PlayerAndSprite nonSelected = (selected.isLeft()) ? this.rightPlayer : this.leftPlayer;
                     double intersectionVal = selected.getPlayersIntersection(nonSelected);
                     boolean isIntersecting = selected.checkIntersection(intersectionVal);
+
                     if (nonSelected.getPlayer().getState() != States.BLOCK && isIntersecting) {
+                        nonSelected.setState(States.INJURED);
+                        nonSelected.updatePlayerAnimationOnHit(true);
                         selected.hit(nonSelected);
-                        boolean toRight = !nonSelected.isLeft();
-                        nonSelected.moveInjured(toRight);
+                        if (nonSelected.getPlayer().getHp() != 0) {
+                            boolean toRight = !nonSelected.isLeft();
+                            nonSelected.moveInjured(toRight);
+                        }
+                        else {
+                            selected.setState(States.VICTORY);
+                            selected.updatePlayerAnimationOnHit(false);
+                            nonSelected.setState(States.DEAD);
+                            nonSelected.updatePlayerAnimationOnHit(false);
+                        }
                     }
                 }
                 break;
