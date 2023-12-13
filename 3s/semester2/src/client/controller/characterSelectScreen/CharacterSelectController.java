@@ -7,15 +7,20 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.io.File;
 
 public class CharacterSelectController {
     @FXML private ImageView mainImage;
     @FXML private ImageView characterSprite;
     @FXML private AnchorPane pane;
     private Characters selectedCharacter;
+    private MediaPlayer mediaPlayer;
 
     @FXML
     public void initialize() {
@@ -79,6 +84,9 @@ public class CharacterSelectController {
     }
 
     private void setPreviewCharacter(int x, int y) {
+        if (this.mediaPlayer != null) {
+            this.mediaPlayer.stop();
+        }
         switch (x + y) {
             case 0:
                 this.selectedCharacter = Characters.JOHNNY_CAGE;
@@ -96,6 +104,9 @@ public class CharacterSelectController {
                 this.selectedCharacter = (y == 0) ? Characters.SONYA_BLADE : Characters.SCORPION;
                 break;
         }
+        Media sound = new Media(new File(this.selectedCharacter.getAnnouncerPath()).toURI().toString());
+        this.mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
     public Characters getSelectedCharacter() {
