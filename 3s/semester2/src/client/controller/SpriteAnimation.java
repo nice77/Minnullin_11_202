@@ -48,7 +48,7 @@ public class SpriteAnimation extends Transition {
         Platform.runLater(() -> this.imageView.setImage(new Image(character.getSpritePath())));
 
         setInterpolator(Interpolator.LINEAR);
-        if (!state.equals("HIT")) {
+        if (state.equals("WALK") || state.equals("BLOCK") || state.equals("IDLE")) {
             setCycleCount(Animation.INDEFINITE);
         }
         else {
