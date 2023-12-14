@@ -12,7 +12,6 @@ public class MessageListener extends Thread {
 
     private BufferedReader br;
     private ChangeStageScene changeStageScene;
-    private boolean created;
     private SendEventToServer sendEventToServer;
     private HandleControllerInput handleControllerInput;
     private String selectedCharacterName;
@@ -24,9 +23,9 @@ public class MessageListener extends Thread {
                            String selectedCharacterName) {
         this.br = br;
         this.changeStageScene = changeStageScene;
-        this.created = false;
         this.sendEventToServer = sendEventToServer;
         this.selectedCharacterName = selectedCharacterName;
+        this.setDaemon(true);
     }
 
     public void setHandleControllerInput(HandleControllerInput handleControllerInput) {
@@ -37,36 +36,51 @@ public class MessageListener extends Thread {
     public void run() {
         String event;
 
-        while (true) {
+        loop: while (true) {
             try {
                 event = this.br.readLine();
+                System.out.println(event);
                 Map<String, String> eventParsed = Service.parser(event);
+                System.out.println(eventParsed);
+                ActionTypes actionType = ActionTypes.valueOf(eventParsed.get("actionType"));
 
-                if (eventParsed.containsKey("created")) {
-                    this.created = true;
-                    this.sendEventToServer.sendEventToServer(this.selectedCharacterName);
-                }
-                else if (event.contains("player")) {
-                    String characterName = event.split("=")[1];
-                    if (eventParsed.containsKey("player0")) {
-                        SelectedCharacters.mainPlayer = new Player("left", 30, Characters.valueOf(characterName));
-                    }
-                    else {
-                        SelectedCharacters.otherPlayer = new Player("right", 570, Characters.valueOf(characterName));
-                    }
-                    checkNullablePlayersAndChangeScene();
-                }
-                else if (eventParsed.containsKey("playable") && !eventParsed.containsKey("key")) {
-                    int playable = Integer.parseInt(event.split("=")[1]);
-                    SelectedCharacters.playable = (playable == 0) ? SelectedCharacters.mainPlayer : SelectedCharacters.otherPlayer;
-                    checkNullablePlayersAndChangeScene();
-                }
-                else {
-                    this.handleControllerInput.handleControllerInput(event);
+                switch (actionType) {
+                    case CREATED:
+                        this.sendEventToServer.sendEventToServer(this.selectedCharacterName);
+                        break;
+                    case PLAYER_SELECTED:
+                        String characterName = eventParsed.get("player");
+                        if (eventParsed.get("position").equals("0")) {
+                            SelectedCharacters.mainPlayer = new Player("left", 30, Characters.valueOf(characterName));
+                        }
+                        else {
+                            SelectedCharacters.otherPlayer = new Player("right", 570, Characters.valueOf(characterName));
+                        }
+                        checkNullablePlayersAndChangeScene();
+                        break;
+                    case PLAYER_CURRENT_SELECTED:
+                        int playable = Integer.parseInt(eventParsed.get("playable"));
+                        SelectedCharacters.playable = (playable == 0) ? SelectedCharacters.mainPlayer : SelectedCharacters.otherPlayer;
+                        checkNullablePlayersAndChangeScene();
+                        break;
+                    case KEY_PRESSED:
+                        this.handleControllerInput.handleControllerInput(event);
+                        break;
+                    case GAME_OVER:
+                        System.out.println("Received GAME_OVER");
+                        this.handleControllerInput.handleControllerInput(event);
+                        break loop;
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+        try {
+            System.out.println("Joining listener");
+            this.join();
+            System.out.println("Joined listener");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

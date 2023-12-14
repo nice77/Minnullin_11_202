@@ -4,6 +4,9 @@ import client.InputHandler;
 import client.Resources;
 import client.assets.characters.Characters;
 import client.controller.fightScreen.FightController;
+import client.view.ScreenFactory;
+import client.view.ScreenTypes;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -30,9 +33,19 @@ public class FightScreen extends AbstractScreen {
         FightController fightController = this.fxmlLoader.getController();
         this.scene.setOnKeyPressed(new InputHandler(true, fightController::sendEvent));
         this.scene.setOnKeyReleased(new InputHandler(false, fightController::sendEvent));
+        ((FightController) this.fxmlLoader.getController()).getIsGameOver().addListener((observable, oldValue, newValue) -> {
+                setSelectScreen();
+            }
+        );
     }
 
     public void setControllerSocket(Socket socket) {
         ((FightController) this.fxmlLoader.getController()).setSocket(socket);
+    }
+
+    public void setSelectScreen() {
+        ScreenFactory screenFactory = new ScreenFactory();
+        AbstractScreen screen = screenFactory.getNewScreen(this.primaryStage, ScreenTypes.SELECT);
+        Platform.runLater(() -> this.primaryStage.setScene(screen.getScene()));
     }
 }

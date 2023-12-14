@@ -1,12 +1,8 @@
 package client.view.screens;
 
-import client.MessageListener;
-import client.Resources;
-import client.SelectedCharacters;
-import client.assets.characters.Characters;
+import client.*;
 import client.controller.characterSelectScreen.CharacterSelectController;
 import client.controller.fightScreen.FightController;
-import client.controller.fightScreen.Player;
 import client.view.ScreenFactory;
 import client.view.ScreenTypes;
 import javafx.application.Platform;
@@ -41,7 +37,7 @@ public class SelectScreen extends AbstractScreen {
                 AbstractScreen screen = screenFactory.getNewScreen(this.primaryStage, ScreenTypes.LOADING);
 
                 try {
-                    this.socket = new Socket("localhost", 8000);
+                    this.socket = new Socket("5.tcp.eu.ngrok.io", 16611);
                     launchMessageListener(this.socket);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -85,7 +81,7 @@ public class SelectScreen extends AbstractScreen {
     public void sendInfoAboutSelectedPlayer(String character) {
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
-            String message = "player=" + character;
+            String message = "actionType=" + ActionTypes.PLAYER_SELECTED + "&player=" + character;
             bw.write(message + "\n");
             bw.flush();
         } catch (IOException e) {

@@ -1,17 +1,17 @@
 package client.controller.fightScreen;
 
-import client.Resources;
-import client.SelectedCharacters;
-import client.Service;
+import client.*;
 import client.controller.SpriteAnimation;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Map;
@@ -30,10 +30,13 @@ public class FightController {
 
     private PlayerAndSprite leftPlayer;
     private PlayerAndSprite rightPlayer;
+    private BooleanProperty isGameOver;
 
 
     @FXML
     public void initialize() {
+        this.isGameOver = new SimpleBooleanProperty(false);
+
         this.leftPlayer = new PlayerAndSprite(
                 SelectedCharacters.mainPlayer,
                 new SpriteAnimation(
@@ -63,6 +66,13 @@ public class FightController {
 
     public void receiveInfo(String event) {
         Map<String, String> eventParsed = Service.parser(event);
+        if (ActionTypes.valueOf(eventParsed.get("actionType")) == ActionTypes.GAME_OVER) {
+            System.out.println("Closing socket");
+            this.closeSocket();
+            this.isGameOver.set(true);
+            return;
+        }
+
         PlayerAndSprite selected = eventParsed.get("playable").equals("left") ?  this.leftPlayer : this.rightPlayer;
         switch (eventParsed.get("key")) {
             case "A":
@@ -102,6 +112,17 @@ public class FightController {
                             selected.updatePlayerAnimationOnHit(false);
                             nonSelected.setState(States.DEAD);
                             nonSelected.updatePlayerAnimationOnHit(false);
+                            try {
+                                PauseTransition delay = new PauseTransition(Duration.seconds(5));
+                                delay.setCycleCount(1);
+                                delay.play();
+                                delay.setOnFinished(event1 -> {
+                                    System.out.println("Sending GAME_OVER");
+                                    this.sendEvent("actionType=" + ActionTypes.GAME_OVER);
+                                });
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                 }
@@ -111,6 +132,7 @@ public class FightController {
 
     public void sendEvent(String event) {
         try {
+            System.out.println("Sending: " + event + "&playable=" + SelectedCharacters.playable.getName());
             bw.write(event + "&playable=" + SelectedCharacters.playable.getName() + "\n");
             bw.flush();
         } catch (IOException e) {
@@ -130,5 +152,17 @@ public class FightController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void closeSocket() {
+        try {
+            this.socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public BooleanProperty getIsGameOver() {
+        return this.isGameOver;
     }
 }

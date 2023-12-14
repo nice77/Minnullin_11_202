@@ -13,6 +13,6 @@ public class InputHandler implements EventHandler<KeyEvent> {
     }
     @Override
     public void handle(KeyEvent event) {
-        this.sendEventToServer.sendEventToServer("isPressed="+this.isPressed+"&key="+event.getCode().name());
+        this.sendEventToServer.sendEventToServer("actionType=" + ActionTypes.KEY_PRESSED + "&isPressed="+this.isPressed+"&key="+event.getCode().name());
     }
 }
