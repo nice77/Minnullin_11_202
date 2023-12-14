@@ -1,5 +1,7 @@
 package server;
 
+import client.ActionTypes;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.*;
@@ -29,16 +31,18 @@ public class Server {
                                         serverSocket.accept(),
                                         this::sendMessage,
                                         this::checkIfRoomIsCreated,
-                                        this::getPositionInRoom
+                                        this::getPositionInRoom,
+                                        this::destroyRoom
                                 ),
                                 new ServerConnection(
                                         uuid,
                                         serverSocket.accept(),
                                         this::sendMessage,
                                         this::checkIfRoomIsCreated,
-                                        this::getPositionInRoom
+                                        this::getPositionInRoom,
+                                        this::destroyRoom
                                 )
-                        ) ;
+                        );
                 this.roomList.put(uuid, room);
             }
         } catch (IOException e) {
@@ -58,14 +62,27 @@ public class Server {
     public void checkIfRoomIsCreated(UUID uuid) {
         List<ServerConnection> room = this.roomList.get(uuid);
         if (room != null) {
-            room.forEach(item -> item.sendMessageToClient("created=true"));
+            room.forEach(item -> item.sendMessageToClient("actionType=" + ActionTypes.CREATED));
         }
     }
 
     public int getPositionInRoom(UUID uuid, ServerConnection serverConnection) {
         List<ServerConnection> room = roomList.get(uuid);
-        System.out.println("Server: position - " + room.indexOf(serverConnection));
         return room.indexOf(serverConnection);
+    }
+
+    public void destroyRoom(UUID uuid) {
+        if (!checkIfServerConnectionsActive(uuid)) {
+            System.out.println(roomList);
+            roomList.remove(uuid);
+            System.out.println(roomList);
+        }
+    }
+
+    public boolean checkIfServerConnectionsActive(UUID uuid) {
+        List<ServerConnection> room = roomList.get(uuid);
+        System.out.println("Any match: " + room.stream().anyMatch(item -> !item.getSocket().isClosed()));
+        return room.stream().anyMatch(item -> !item.getSocket().isClosed());
     }
 
     public static void main(String[] args) {

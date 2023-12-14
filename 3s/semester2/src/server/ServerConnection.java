@@ -1,7 +1,10 @@
 package server;
 
+import client.ActionTypes;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.Map;
 import java.util.UUID;
 
 public class ServerConnection extends Thread {
@@ -12,12 +15,14 @@ public class ServerConnection extends Thread {
     private SendEventToOther sendEventToOtherImpl;
     private CheckIfRoomIsCreated checkIfRoomIsCreated;
     private GetPositionInRoom getPositionInRoom;
+    private DestroyRoom destroyRoom;
 
     public ServerConnection(UUID uuid,
                             Socket socket,
                             SendEventToOther sendEventToOtherImpl,
                             CheckIfRoomIsCreated checkIfRoomIsCreated,
-                            GetPositionInRoom getPositionInRoom) {
+                            GetPositionInRoom getPositionInRoom,
+                            DestroyRoom destroyRoom) {
         this.uuid = uuid;
         this.socket = socket;
         try {
@@ -29,6 +34,8 @@ public class ServerConnection extends Thread {
         this.sendEventToOtherImpl = sendEventToOtherImpl;
         this.checkIfRoomIsCreated = checkIfRoomIsCreated;
         this.getPositionInRoom = getPositionInRoom;
+        this.destroyRoom = destroyRoom;
+        this.setDaemon(true);
         this.start();
     }
 
@@ -41,27 +48,59 @@ public class ServerConnection extends Thread {
         }
     }
 
+    public void closeSocket() {
+        try {
+            this.socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void run() {
         String event;
         this.checkIfRoomIsCreated.checkIfRoomIsCreated(this.uuid);
-        while (true) {
+        loop: while (true) {
             try {
-                event = br.readLine();
-                System.out.println("Server: received - " + event);
-                if (event.split("=")[0].equals("player")) {
-                    int position = this.getPositionInRoom.getPositionInRoom(this.uuid, this);
-                    String message = event.replace("=", position + "=");
-                    this.sendEventToOtherImpl.sendMessage(this.uuid, message);
-                    bw.write("playable=" + this.getPositionInRoom.getPositionInRoom(this.uuid, this) + "\n");
-                    bw.flush();
-                }
-                else {
-                    this.sendEventToOtherImpl.sendMessage(uuid, event);
+                event = this.br.readLine();
+                Map<String, String> eventParsed = Service.parser(event);
+//                System.out.println(event);
+//                System.out.println(eventParsed);
+//                System.out.println("----------");
+
+                ActionTypes actionType = ActionTypes.valueOf(eventParsed.get("actionType"));
+                switch (actionType) {
+                    case PLAYER_SELECTED:
+                        int position = this.getPositionInRoom.getPositionInRoom(this.uuid, this);
+                        String eventUpdated = event + "&position=" + position;
+                        this.sendEventToOtherImpl.sendMessage(this.uuid, eventUpdated);
+                        String eventForCurrentClient = "actionType=" + ActionTypes.PLAYER_CURRENT_SELECTED + "&playable=" + position;
+                        this.sendMessageToClient(eventForCurrentClient);
+                        break;
+                    case GAME_OVER:
+                        System.out.println(eventParsed);
+                        this.sendMessageToClient(event);
+                        this.closeSocket();
+                        this.destroyRoom.destroyRoom(this.uuid);
+                        break loop;
+                    default:
+                        this.sendEventToOtherImpl.sendMessage(this.uuid, event);
+                        break;
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+        try {
+            System.out.println("Joining connection");
+            this.join();
+            System.out.println("Jonied connection");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 }
