@@ -35,6 +35,9 @@ public class SelectScreen extends AbstractScreen {
             if (event.getCode() == KeyCode.ENTER) {
                 ScreenFactory screenFactory = new ScreenFactory();
                 AbstractScreen screen = screenFactory.getNewScreen(this.primaryStage, ScreenTypes.LOADING);
+                if (((CharacterSelectController) this.fxmlLoader.getController()).getSelectedCharacter() == null) {
+                    return;
+                }
 
                 try {
                     this.socket = new Socket("localhost", 8000);
