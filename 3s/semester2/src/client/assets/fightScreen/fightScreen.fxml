@@ -4,11 +4,16 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.control.Label?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="client.controller.fightScreen.FightController"
             prefHeight="400.0" prefWidth="600.0">
     <ImageView fx:id="bgImageView"/>
+    <Label
+            AnchorPane.leftAnchor="400"
+            AnchorPane.topAnchor="30"
+            fx:id="timer"/>
 
     <Rectangle AnchorPane.topAnchor="30"
                AnchorPane.leftAnchor="30"

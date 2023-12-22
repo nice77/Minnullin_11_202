@@ -2,11 +2,17 @@ package client.controller.fightScreen;
 
 import client.*;
 import client.controller.SpriteAnimation;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
@@ -17,6 +23,7 @@ import javafx.util.Duration;
 import java.io.*;
 import java.net.Socket;
 import java.util.Map;
+import java.util.Timer;
 
 public class FightController {
 
@@ -25,6 +32,7 @@ public class FightController {
     @FXML private ImageView otherPlayerImageView;
     @FXML private Rectangle leftHealthBarGreen;
     @FXML private Rectangle rightHealthBarGreen;
+    @FXML private Label timer;
     private Socket socket;
     private BufferedWriter bw;
     private BufferedReader br;
@@ -39,6 +47,21 @@ public class FightController {
     public void initialize() {
         this.soundPlayer = new MediaPlayer(new Media(new File(Resources.FIGHT).toURI().toString()));
         this.isGameOver = new SimpleBooleanProperty(false);
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            private int seconds = 90;
+            @Override
+            public void handle(ActionEvent event) {
+                seconds--;
+                timer.setText(Integer.toString(seconds));
+                if (seconds == 0) {
+                    sendEvent("actionType=" + ActionTypes.GAME_OVER);
+                }
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
 
         this.leftPlayer = new PlayerAndSprite(
                 SelectedCharacters.mainPlayer,
