@@ -84,13 +84,15 @@ public class FightController {
         switch (eventParsed.get("key")) {
             case "A":
                 selected.checkAndChangeState(eventParsed);
-                if (selected.getPlayer().getState() == States.WALK) {
+                if (selected.getPlayer().getState() == States.WALK
+                        && selected.getPlayer().getPos().get() > 1e-8) {
                     selected.move(false);
                 }
                 break;
             case "D":
                 selected.checkAndChangeState(eventParsed);
-                if (selected.getPlayer().getState() == States.WALK) {
+                if (selected.getPlayer().getState() == States.WALK
+                        && selected.getPlayer().getPos().get() - 650 < 1e-8) {
                     selected.move(true);
                 }
                 break;
