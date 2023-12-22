@@ -9,6 +9,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -19,7 +21,6 @@ import java.util.Map;
 public class FightController {
 
     @FXML private ImageView bgImageView;
-    @FXML private ImageView fgImageView;
     @FXML private ImageView mainPlayerImageView;
     @FXML private ImageView otherPlayerImageView;
     @FXML private Rectangle leftHealthBarGreen;
@@ -31,10 +32,12 @@ public class FightController {
     private PlayerAndSprite leftPlayer;
     private PlayerAndSprite rightPlayer;
     private BooleanProperty isGameOver;
+    private MediaPlayer soundPlayer;
 
 
     @FXML
     public void initialize() {
+        this.soundPlayer = new MediaPlayer(new Media(new File(Resources.FIGHT).toURI().toString()));
         this.isGameOver = new SimpleBooleanProperty(false);
 
         this.leftPlayer = new PlayerAndSprite(
@@ -62,6 +65,10 @@ public class FightController {
         bgImageView.setImage(new Image(Resources.ARENA_01));
         bgImageView.setFitWidth(Resources.WINDOW_WIDTH);
         bgImageView.setFitHeight(Resources.WINDOW_HEIGHT);
+        soundPlayer.setOnEndOfMedia(() -> {
+            this.soundPlayer = new MediaPlayer(new Media(new File(Resources.PUNCH).toURI().toString()));
+        });
+        soundPlayer.play();
     }
 
     public void receiveInfo(String event) {
@@ -100,6 +107,8 @@ public class FightController {
                     boolean isIntersecting = selected.checkIntersection(intersectionVal);
 
                     if (nonSelected.getPlayer().getState() != States.BLOCK && isIntersecting) {
+                        this.soundPlayer.play();
+                        this.soundPlayer.setOnEndOfMedia(() -> this.soundPlayer = new MediaPlayer(new Media(new File(Resources.PUNCH).toURI().toString())));
                         nonSelected.setState(States.INJURED);
                         nonSelected.updatePlayerAnimationOnHit(true);
                         selected.hit(nonSelected);
@@ -112,21 +121,25 @@ public class FightController {
                             selected.updatePlayerAnimationOnHit(false);
                             nonSelected.setState(States.DEAD);
                             nonSelected.updatePlayerAnimationOnHit(false);
-                            try {
-                                PauseTransition delay = new PauseTransition(Duration.seconds(5));
-                                delay.setCycleCount(1);
-                                delay.play();
-                                delay.setOnFinished(event1 -> {
-                                    System.out.println("Sending GAME_OVER");
-                                    this.sendEvent("actionType=" + ActionTypes.GAME_OVER);
-                                });
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
+                            gameOver();
                         }
                     }
                 }
                 break;
+        }
+    }
+
+    public void gameOver() {
+        try {
+            PauseTransition delay = new PauseTransition(Duration.seconds(5));
+            delay.setCycleCount(1);
+            delay.setOnFinished(event1 -> {
+                System.out.println("Sending GAME_OVER");
+                this.sendEvent("actionType=" + ActionTypes.GAME_OVER);
+            });
+            delay.play();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

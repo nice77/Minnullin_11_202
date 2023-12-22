@@ -37,7 +37,7 @@ public class SelectScreen extends AbstractScreen {
                 AbstractScreen screen = screenFactory.getNewScreen(this.primaryStage, ScreenTypes.LOADING);
 
                 try {
-                    this.socket = new Socket("5.tcp.eu.ngrok.io", 16611);
+                    this.socket = new Socket("localhost", 8000);
                     launchMessageListener(this.socket);
                 } catch (IOException e) {
                     throw new RuntimeException(e);

@@ -9,7 +9,6 @@
             fx:controller="client.controller.fightScreen.FightController"
             prefHeight="400.0" prefWidth="600.0">
     <ImageView fx:id="bgImageView"/>
-    <ImageView fx:id="fgImageView"/>
 
     <Rectangle AnchorPane.topAnchor="30"
                AnchorPane.leftAnchor="30"

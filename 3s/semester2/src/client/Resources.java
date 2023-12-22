@@ -35,4 +35,8 @@ public class Resources {
     public static final String FIGHT_SCREEN = "/client/assets/fightScreen/fightScreen.fxml";
     public static final String ARENA_01 = "/client/assets/fightScreen/arena01.png";
 
+    public static final String FIGHT =  "src/client/assets/audio/fight.wav";
+    public static final String PUNCH = "src/client/assets/audio/punch.wav";
+    public static final String VICTORY = "src/client/assets/audio/flawless_victory.wav";
+
 }
